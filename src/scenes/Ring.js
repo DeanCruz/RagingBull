@@ -50,6 +50,9 @@ class Ring extends Phaser.Scene {
         this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+        this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q); 
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E); 
     }
 
     update() {
@@ -73,7 +76,18 @@ class Ring extends Phaser.Scene {
             } else if(this.keyD.isDown) {
                 this.p1Boxer.x += 2;
             }
-    
+
+            if (Phaser.Input.Keyboard.JustDown(this.keyQ)) {
+                this.leftpunching = true;
+                this.p1Boxer.punchLeft();
+                this.leftpunching = false;
+            }
+            if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
+                this.rightpunching = true;
+                this.p1Boxer.punchRight();
+                this.rightpunching = false;
+            }
+            
             // rotate boxer to face towards mouse pointer
             const pointer = this.input.activePointer;
             const angle = Phaser.Math.Angle.Between(this.p1Boxer.x, this.p1Boxer.y, pointer.x, pointer.y);
@@ -82,13 +96,15 @@ class Ring extends Phaser.Scene {
             // Fist's distance from the center of the boxer
             let distance = this.p1Boxer.displayWidth / 2;
 
-            // Position fists
-            this.p1Boxer.leftFist.x = this.p1Boxer.x + Math.cos(angle - Math.PI/2) * distance;
-            this.p1Boxer.leftFist.y = this.p1Boxer.y + Math.sin(angle - Math.PI/2) * distance;
-
-            this.p1Boxer.rightFist.x = this.p1Boxer.x + Math.cos(angle + Math.PI/2) * distance;
-            this.p1Boxer.rightFist.y = this.p1Boxer.y + Math.sin(angle + Math.PI/2) * distance;
-
+            if (!this.p1Boxer.leftpunching) { // only reposition fists if not punching
+                // Position left fist
+                this.p1Boxer.leftFist.x = this.p1Boxer.x + Math.cos(angle - Math.PI/2) * distance;
+                this.p1Boxer.leftFist.y = this.p1Boxer.y + Math.sin(angle - Math.PI/2) * distance;
+            }
+            if (!this.p1Boxer.rightpunching) {
+                this.p1Boxer.rightFist.x = this.p1Boxer.x + Math.cos(angle + Math.PI/2) * distance;
+                this.p1Boxer.rightFist.y = this.p1Boxer.y + Math.sin(angle + Math.PI/2) * distance;
+            }
         }
     }
     
