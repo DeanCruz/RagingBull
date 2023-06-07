@@ -38,7 +38,7 @@ class NPCBoxer extends Boxer {
   
       // Set a random duration for this movement state
       this.moveTimer.reset({
-        delay: Phaser.Math.Between(500, 2000), // between 0.5 and 2 seconds
+        delay: Phaser.Math.Between(100, 500), // between 0.5 and 2 seconds
         callback: this.decideMove,
         callbackScope: this
       });
@@ -55,10 +55,49 @@ class NPCBoxer extends Boxer {
       let len = Math.sqrt(dirX * dirX + dirY * dirY);
       dirX /= len;
       dirY /= len;
+
+    // The position of the center of the ring
+    const centerX = this.scene.width / 2;
+    const centerY = this.scene.height / 2;
+    
+    // The radius of the ring
+    const ringRadius = 200;
+    
+    // The distance between the NPC and the center of the ring
+    const distFromCenter = Phaser.Math.Distance.Between(this.x, this.y, centerX, centerY);
+    
+    // If the NPC is near the edge of the ring, direct it back towards the center
+    if (distFromCenter > ringRadius - 20) { // Change 20 to how close to the edge you want the NPC to get
+        const angleToCenter = Phaser.Math.Angle.Between(this.x, this.y, centerX, centerY);
+        
+        // Set the NPC's movement state to 'towardsCenter' and start a timer
+        this.moveState = 'towardsCenter';
+        this.moveTimer.reset({
+        delay: 2000, // 2 seconds
+        callback: this.decideMove,
+        callbackScope: this
+        });
+        
+        // Adjust the NPC's position
+        this.x += Math.cos(angleToCenter) * speed;
+        this.y += Math.sin(angleToCenter) * speed;
+    }
+    
+    // Apply the movement state
+    if (this.moveState == 'forward') {
+        this.x += dirX * speed;
+        this.y += dirY * speed;
+    } else if (this.moveState == 'backward') {
+        this.x -= dirX * speed;
+        this.y -= dirY * speed;
+    } else if (this.moveState == 'towardsCenter') {
+        // If in 'towardsCenter' state, the NPC is already moving towards the center
+        // So, do nothing here
+    }      
   
       // Apply the movement state
       console.log(len);
-      if (this.moveState == 'forward' && len > 20) {
+      if (this.moveState == 'forward' > 30) {
         this.x += dirX * speed;
         this.y += dirY * speed;
       } else if (this.moveState == 'backward') {
@@ -69,6 +108,7 @@ class NPCBoxer extends Boxer {
       } else {
         this.x -= dirX * speed;
       }
+
       // Rotate NPC to face towards the player boxer with a 45-degree offset
         const angle = Phaser.Math.Angle.Between(
             this.x,
