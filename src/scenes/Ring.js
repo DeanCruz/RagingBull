@@ -49,8 +49,8 @@ class Ring extends Phaser.Scene {
         this.p1Boxer = new Boxer(this, game.config.width/2, game.config.height/1.2, 'boxer').setOrigin(0.5, 0);
         this.p1Boxer.setScale(2);
         // Create NPC
-        // this.npcBoxer = new NPCBoxer(this, game.config.width/2 - 100, game.config.height/1.2 - 100, 'boxer').setOrigin(0.5, 0);
-        // this.npcBoxer.setScale(2);
+        this.npcBoxer = new NPCBoxer(this, game.config.width/2 - 100, game.config.height/1.2 - 100, 'boxer').setOrigin(0.5, 0);
+        this.npcBoxer.setScale(2);
 
 
         // define keys
@@ -61,10 +61,10 @@ class Ring extends Phaser.Scene {
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         // punching
-        this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q); 
-        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E); 
-        this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
-        this.keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
+        this.key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE); 
+        this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO); 
+        this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
+        this.key4 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
     }
 
     update() {
@@ -74,8 +74,7 @@ class Ring extends Phaser.Scene {
           const ringY = (game.config.height - 380) / 2;
       
           // Prevent p1Boxer from moving outside of the ring
-          // Prevent p1Boxer from moving outside of the ring
-            [ this.p1Boxer ].forEach(boxer => {
+            [ this.p1Boxer , this.npcBoxer ].forEach(boxer => {
                 boxer.x = Phaser.Math.Clamp(
                 boxer.x,
                 ringX + boxer.width / 2,
@@ -88,7 +87,7 @@ class Ring extends Phaser.Scene {
                 );
             });
             
-            // this.npcBoxer.update();
+            this.npcBoxer.update(this.p1Boxer);
             this.p1Boxer.update(this.input.activePointer);
   
           // Check keys
@@ -112,26 +111,26 @@ class Ring extends Phaser.Scene {
             this.p1Boxer.velX = 0;
           }
           
-          if (Phaser.Input.Keyboard.JustDown(this.keyQ)) {
+          if (Phaser.Input.Keyboard.JustDown(this.key1)) {
             if (!this.p1Boxer.leftpunching) {
               this.p1Boxer.leftpunching = true;
               this.p1Boxer.punchLeft(this.input.activePointer);
             }
           }
           
-          if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
+          if (Phaser.Input.Keyboard.JustDown(this.key2)) {
             if (!this.p1Boxer.rightpunching) {
               this.p1Boxer.rightpunching = true;
               this.p1Boxer.punchRight(this.input.activePointer);
             }
           }
-          if (Phaser.Input.Keyboard.JustDown(this.keyZ)) {
+          if (Phaser.Input.Keyboard.JustDown(this.key3)) {
             if (!this.p1Boxer.leftpunching) {
               this.p1Boxer.leftpunching = true;
               this.p1Boxer.hookLeft(this.input.activePointer);
             }
           }
-          if (Phaser.Input.Keyboard.JustDown(this.keyC)) {
+          if (Phaser.Input.Keyboard.JustDown(this.key4)) {
             if (!this.p1Boxer.rightpunching) {
               this.p1Boxer.rightpunching = true;
               this.p1Boxer.hookRight(this.input.activePointer);
