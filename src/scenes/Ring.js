@@ -45,9 +45,13 @@ class Ring extends Phaser.Scene {
         this.add.rectangle(ringX, ringY, ringBorderThickness, ringHeight, ringBorderColor).setOrigin(0,0); // Left border
         this.add.rectangle(ringX + ringWidth - ringBorderThickness, ringY, ringBorderThickness, ringHeight, ringBorderColor).setOrigin(0,0); // Right border
 
-
+        // Create Player
         this.p1Boxer = new Boxer(this, game.config.width/2, game.config.height/1.2, 'boxer').setOrigin(0.5, 0);
         this.p1Boxer.setScale(2);
+        // Create NPC
+        // this.npcBoxer = new NPCBoxer(this, game.config.width/2 - 100, game.config.height/1.2 - 100, 'boxer').setOrigin(0.5, 0);
+        // this.npcBoxer.setScale(2);
+
 
         // define keys
         // movement
@@ -59,7 +63,7 @@ class Ring extends Phaser.Scene {
         // punching
         this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q); 
         this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E); 
-        this.keyShift = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+        this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
         this.keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
     }
 
@@ -70,17 +74,23 @@ class Ring extends Phaser.Scene {
           const ringY = (game.config.height - 380) / 2;
       
           // Prevent p1Boxer from moving outside of the ring
-          this.p1Boxer.x = Phaser.Math.Clamp(
-            this.p1Boxer.x,
-            ringX + this.p1Boxer.width / 2,
-            ringX + 380 - this.p1Boxer.width / 2
-          );
-          this.p1Boxer.y = Phaser.Math.Clamp(
-            this.p1Boxer.y,
-            ringY + this.p1Boxer.height / 2,
-            ringY + 380 - this.p1Boxer.height / 2
-          );
-      
+          // Prevent p1Boxer from moving outside of the ring
+            [ this.p1Boxer ].forEach(boxer => {
+                boxer.x = Phaser.Math.Clamp(
+                boxer.x,
+                ringX + boxer.width / 2,
+                ringX + 380 - boxer.width / 2
+                );
+                boxer.y = Phaser.Math.Clamp(
+                boxer.y,
+                ringY + boxer.height / 2,
+                ringY + 380 - boxer.height / 2
+                );
+            });
+            
+            // this.npcBoxer.update();
+            this.p1Boxer.update(this.input.activePointer);
+  
           // Check keys
           if (this.keyW.isDown) {
             this.p1Boxer.y -= 2;
@@ -102,7 +112,6 @@ class Ring extends Phaser.Scene {
             this.p1Boxer.velX = 0;
           }
           
-      
           if (Phaser.Input.Keyboard.JustDown(this.keyQ)) {
             if (!this.p1Boxer.leftpunching) {
               this.p1Boxer.leftpunching = true;
@@ -116,7 +125,7 @@ class Ring extends Phaser.Scene {
               this.p1Boxer.punchRight(this.input.activePointer);
             }
           }
-          if (Phaser.Input.Keyboard.JustDown(this.keyShift)) {
+          if (Phaser.Input.Keyboard.JustDown(this.keyZ)) {
             if (!this.p1Boxer.leftpunching) {
               this.p1Boxer.leftpunching = true;
               this.p1Boxer.hookLeft(this.input.activePointer);
@@ -127,40 +136,7 @@ class Ring extends Phaser.Scene {
               this.p1Boxer.rightpunching = true;
               this.p1Boxer.hookRight(this.input.activePointer);
             }
-          }
-      
-      
-          // Rotate boxer to face towards mouse pointer with a 45-degree offset
-          const pointer = this.input.activePointer;
-          const angle = Phaser.Math.Angle.Between(
-            this.p1Boxer.x,
-            this.p1Boxer.y,
-            pointer.x,
-            pointer.y
-          );
-          const rotationAngle = angle + Math.PI / 2 + Math.PI / 4;
-          this.p1Boxer.setRotation(rotationAngle);
-      
-          // Update the positions and rotations of the fists relative to the boxer
-          const distance = this.p1Boxer.displayWidth / 2;
-      
-          if (!this.p1Boxer.leftpunching) {
-            const leftFistOffset = Math.PI / 2 + Math.PI / 4;
-            const leftFistAngle = rotationAngle + leftFistOffset;
-            const leftFistX = this.p1Boxer.x + Math.cos(leftFistAngle) * distance;
-            const leftFistY = this.p1Boxer.y + Math.sin(leftFistAngle) * distance;
-            this.p1Boxer.leftFist.setPosition(leftFistX, leftFistY);
-            this.p1Boxer.leftFist.setRotation(rotationAngle);
-          }
-      
-          if (!this.p1Boxer.rightpunching) {
-            const rightFistOffset = Math.PI / 2 - Math.PI / 4;
-            const rightFistAngle = rotationAngle + rightFistOffset;
-            const rightFistX = this.p1Boxer.x + Math.cos(rightFistAngle) * distance;
-            const rightFistY = this.p1Boxer.y + Math.sin(rightFistAngle) * distance;
-            this.p1Boxer.rightFist.setPosition(rightFistX, rightFistY);
-            this.p1Boxer.rightFist.setRotation(rotationAngle);
-        }
+          }  
       }
     }
     
