@@ -48,11 +48,9 @@ class Ring extends Phaser.Scene {
             }
 
             // rotate boxer to face towards mouse pointer
-            let pointer = this.input.activePointer;
-            this.p1Boxer.setRotation(Phaser.Math.Angle.BetweenPoints(this.p1Boxer.x, this.p1Boxer.y, pointer.x, pointer.y));
-            console.log("Pointer:", pointer);
-            console.log("p1Boxer:", this.p1Boxer);
-
+            const pointer = this.input.activePointer;
+            const angle = Phaser.Math.Angle.Between(this.p1Boxer.x, this.p1Boxer.y, pointer.x, pointer.y);
+            this.p1Boxer.setRotation(angle + Math.PI/2);  // Add Math.PI/2 if the sprite is oriented upwards
         }
     }
 
@@ -93,7 +91,7 @@ class Ring extends Phaser.Scene {
 
     resetGame() {    
         // reset rockets and spaceships
-        this.p1.Boxer.reset();
+        this.p1Boxer.reset();
 
         // restart loop
         this.gameOver = false;
