@@ -23,6 +23,26 @@ class Ring extends Phaser.Scene {
         this.add.rectangle(0, 0, borderUISize, game.config.height, 0x000000).setOrigin(0,0);
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0x000000).setOrigin(0,0);
 
+        // Define ring parameters
+        const ringWidth = 400;
+        const ringHeight = 400;
+        const ringColor = 0xAAAAAA;
+        const ringBorderColor = 0xFF0000;
+        const ringBorderThickness = 10;
+        
+        const ringX = (game.config.width - ringWidth) / 2;
+        const ringY = (game.config.height - ringHeight) / 2;
+
+        // Draw ring floor
+        this.add.rectangle(ringX, ringY, ringWidth, ringHeight, ringColor).setOrigin(0,0);
+
+        // Draw ring border
+        this.add.rectangle(ringX, ringY, ringWidth, ringBorderThickness, ringBorderColor).setOrigin(0,0); // Top border
+        this.add.rectangle(ringX, ringY + ringHeight - ringBorderThickness, ringWidth, ringBorderThickness, ringBorderColor).setOrigin(0,0); // Bottom border
+        this.add.rectangle(ringX, ringY, ringBorderThickness, ringHeight, ringBorderColor).setOrigin(0,0); // Left border
+        this.add.rectangle(ringX + ringWidth - ringBorderThickness, ringY, ringBorderThickness, ringHeight, ringBorderColor).setOrigin(0,0); // Right border
+
+
         this.p1Boxer = new Boxer(this, game.config.width/2, game.config.height/1.2, 'boxer').setOrigin(0.5, 0);
 
         // define keys
@@ -34,6 +54,13 @@ class Ring extends Phaser.Scene {
 
     update() {
         if(!this.gameOver) {
+            // boxing ring boundaries
+            const ringX = (game.config.width - 390) / 2;
+            const ringY = (game.config.height - 380) / 2;
+
+            // prevent p1Boxer from moving outside of the ring
+            this.p1Boxer.x = Phaser.Math.Clamp(this.p1Boxer.x, ringX + this.p1Boxer.width / 2, ringX + 380 - this.p1Boxer.width / 2);
+            this.p1Boxer.y = Phaser.Math.Clamp(this.p1Boxer.y, ringY + this.p1Boxer.height / 2, ringY + 380 - this.p1Boxer.height / 2);
             // check keys
             if(this.keyW.isDown) {
                 this.p1Boxer.y -= 2;
