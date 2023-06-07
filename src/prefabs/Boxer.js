@@ -5,6 +5,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
         // Creating a container for the boxer and fists
         this.container = this.scene.add.container(x, y);
         this.container.setSize(this.width, this.height);
+        this.NPCState = false;
     
         // Track movement
         this.moveSpeed = 2;
@@ -13,6 +14,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
     
         this.leftFist = this.scene.add.circle(20, -this.displayHeight / 2, 8, 0xFF0000).setOrigin(.9, .9);
         this.rightFist = this.scene.add.circle(40, -this.displayHeight / 2, 8, 0xFF0000).setOrigin(.5, 1.2);
+
         this.leftpunching = false;
         this.rightpunching = false;
         this.rotation = 0;
