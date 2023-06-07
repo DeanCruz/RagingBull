@@ -40,20 +40,31 @@ class Ring extends Phaser.Scene {
             } else if(this.keyS.isDown) {
                 this.p1Boxer.y += 2;
             }
-
+    
             if(this.keyA.isDown) {
                 this.p1Boxer.x -= 2;
             } else if(this.keyD.isDown) {
                 this.p1Boxer.x += 2;
             }
-
+    
             // rotate boxer to face towards mouse pointer
             const pointer = this.input.activePointer;
             const angle = Phaser.Math.Angle.Between(this.p1Boxer.x, this.p1Boxer.y, pointer.x, pointer.y);
             this.p1Boxer.setRotation(angle + Math.PI/2);  // Add Math.PI/2 if the sprite is oriented upwards
+    
+            // Fist's distance from the center of the boxer
+            let distance = this.p1Boxer.displayWidth / 2;
+
+            // Position fists
+            this.p1Boxer.leftFist.x = this.p1Boxer.x + Math.cos(angle - Math.PI/2) * distance;
+            this.p1Boxer.leftFist.y = this.p1Boxer.y + Math.sin(angle - Math.PI/2) * distance;
+
+            this.p1Boxer.rightFist.x = this.p1Boxer.x + Math.cos(angle + Math.PI/2) * distance;
+            this.p1Boxer.rightFist.y = this.p1Boxer.y + Math.sin(angle + Math.PI/2) * distance;
+
         }
     }
-
+    
     endGame() {
         this.gameOver = true;
         // display text
