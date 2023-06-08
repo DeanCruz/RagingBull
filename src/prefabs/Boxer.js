@@ -137,25 +137,25 @@ class Boxer extends Phaser.GameObjects.Sprite {
         let targetFx = this.rightFist.x, targetFy = this.rightFist.y;
         // When facing up
         if (this.rotation < 0.75 && this.rotation > -0.75){
-            targetIx = this.leftFist.x - 20;
+            targetIx = this.leftFist.x - 25;
             targetFy = this.rightFist.y - 88;
         }
 
         // When facing right
         if (this.rotation >= 0.75 && this.rotation < 2.25){
-            targetIy = this.leftFist.y - 20;
+            targetIy = this.leftFist.y - 25;
             targetFx = this.rightFist.x + 88;
         }
 
         // When facing down
         if (this.rotation >= 2.25 || this.rotation < -2.25){
-            targetIx = this.leftFist.x + 20;
+            targetIx = this.leftFist.x + 25;
             targetFy = this.rightFist.y + 88;
         }
 
         // When facing left
         if (this.rotation <= -0.75 && this.rotation > -2.25){
-            targetIy = this.leftFist.y + 20;
+            targetIy = this.leftFist.y + 25;
             targetFx = this.rightFist.x - 88;
         }
 
