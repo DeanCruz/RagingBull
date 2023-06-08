@@ -97,6 +97,10 @@ class Boxer extends Phaser.GameObjects.Sprite {
 
       // Right Cross
       punchRight(pointer) {
+        if (!pointer || typeof pointer.x === 'undefined' || typeof pointer.y === 'undefined') {
+            console.error('Invalid pointer object:', pointer);
+            return;
+          }
         const punchDistance = 44;
         var pointerx = 0;
       
@@ -108,9 +112,6 @@ class Boxer extends Phaser.GameObjects.Sprite {
             pointerx = pointer.x + 40;
         }
         const angle = Phaser.Math.Angle.Between(this.rightFist.x, this.rightFist.y, pointerx, pointer.y);
-
-        console.log(pointer.x);
-        console.log(pointer.y);
       
         // Calculate target position
         let targetX = this.rightFist.x + punchDistance * Math.cos(angle) + this.velX*8;
@@ -130,8 +131,6 @@ class Boxer extends Phaser.GameObjects.Sprite {
     
       // Left hook
       hookLeft(pointer) {
-        console.log(this.rotation);
-
         // Initial target
         let targetIx = this.leftFist.x, targetIy = this.leftFist.y;
         // Final target angle
@@ -140,36 +139,24 @@ class Boxer extends Phaser.GameObjects.Sprite {
         if (this.rotation < 0.75 && this.rotation > -0.75){
             targetIx = this.leftFist.x - 20;
             targetFy = this.rightFist.y - 88;
-            console.log("1");
-            console.log("Targets: ");
-            console.log(targetIx,targetIy,targetFx,targetFy);
         }
 
         // When facing right
         if (this.rotation >= 0.75 && this.rotation < 2.25){
             targetIy = this.leftFist.y - 20;
             targetFx = this.rightFist.x + 88;
-            console.log("2");
-            console.log("Targets: ");
-            console.log(targetIx,targetIy,targetFx,targetFy);
         }
 
         // When facing down
         if (this.rotation >= 2.25 || this.rotation < -2.25){
             targetIx = this.leftFist.x + 20;
             targetFy = this.rightFist.y + 88;
-            console.log("3");
-            console.log("Targets: ");
-            console.log(targetIx,targetIy,targetFx,targetFy);
         }
 
         // When facing left
         if (this.rotation <= -0.75 && this.rotation > -2.25){
             targetIy = this.leftFist.y + 20;
             targetFx = this.rightFist.x - 88;
-            console.log("4");
-            console.log("Targets: ");
-            console.log(targetIx,targetIy,targetFx,targetFy);
         }
 
         // Calculate the angle between the boxer and the pointer
@@ -206,46 +193,32 @@ class Boxer extends Phaser.GameObjects.Sprite {
     
     // Right hook
     hookRight(pointer) {
-        console.log(this.rotation);
-
         // Initial target
         let targetIx = this.rightFist.x, targetIy = this.rightFist.y;
         // Final target angle
         let targetFx = this.leftFist.x, targetFy = this.leftFist.y;
         // When facing up
         if (this.rotation < 0.75 && this.rotation > -0.75){
-            targetIx = this.rightFist.x + 15;
+            targetIx = this.rightFist.x + 25;
             targetFy = this.leftFist.y - 33;
-            console.log("1");
-            console.log("Targets: ");
-            console.log(targetIx,targetIy,targetFx,targetFy);
         }
 
         // When facing right
         if (this.rotation >= 0.75 && this.rotation < 2.25){
-            targetIy = this.rightFist.y + 15;
+            targetIy = this.rightFist.y + 25;
             targetFx = this.leftFist.x + 33;
-            console.log("2");
-            console.log("Targets: ");
-            console.log(targetIx,targetIy,targetFx,targetFy);
         }
 
         // When facing down
         if (this.rotation >= 2.25 || this.rotation < -2.25){
-            targetIx = this.rightFist.x - 15;
+            targetIx = this.rightFist.x - 25;
             targetFy = this.leftFist.y + 33;
-            console.log("3");
-            console.log("Targets: ");
-            console.log(targetIx,targetIy,targetFx,targetFy);
         }
 
         // When facing left
         if (this.rotation <= -0.75 && this.rotation > -2.25){
-            targetIy = this.rightFist.y - 15;
+            targetIy = this.rightFist.y - 25;
             targetFx = this.leftFist.x - 33;
-            console.log("4");
-            console.log("Targets: ");
-            console.log(targetIx,targetIy,targetFx,targetFy);
         }
 
         // Calculate the angle between the boxer and the pointer
