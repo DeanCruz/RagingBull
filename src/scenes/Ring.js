@@ -2,11 +2,16 @@ class Ring extends Phaser.Scene {
     constructor() {
         super("ringScene");
 
+        // used to stop updating fists while punching
         this.leftpunching = false;
         this.rightpunching = false;
 
         // add text to display time
         this.timeText = null;
+
+        // add text to display health
+        this.p1HealthText = null;
+        this.npcHealthText = null;
     }
 
     // initialize game settings
@@ -52,6 +57,30 @@ class Ring extends Phaser.Scene {
         this.npcBoxer = new NPCBoxer(this, game.config.width/2 - 100, game.config.height/1.2 - 100, 'boxer').setOrigin(0.5, 0);
         this.npcBoxer.setScale(2);
 
+        // create health text
+        const healthConfig = {
+            fontFamily: 'Courier',
+            fontSize: '14px',
+            color: '#ffffff',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0,
+        };
+        this.p1HealthText = this.add.text(game.config.width / 2.5, game.config.height - 20, `Health: ${this.p1Boxer.health}`, healthConfig).setOrigin(0.5);
+        this.npcHealthText = this.add.text(game.config.width / 2.5, 20, `Health: ${this.npcBoxer.health}`, healthConfig).setOrigin(0.5);
+
+        // Health bars
+        this.p1HealthBar = {
+            background: this.add.graphics().fillStyle(0xff0000).fillRect(game.config.width / 1.75 - 50, game.config.height - 25, 100, 10),
+            bar: this.add.graphics().fillStyle(0x00ff00).fillRect(game.config.width / 1.75 - 50, game.config.height - 25, 100, 10)
+        };
+        this.npcHealthBar = {
+            background: this.add.graphics().fillStyle(0xff0000).fillRect(game.config.width / 1.75 - 50, 16, 100, 10),
+            bar: this.add.graphics().fillStyle(0x00ff00).fillRect(game.config.width / 1.75 - 50, 16, 100, 10)
+        };
 
         // define keys
         // movement
@@ -88,7 +117,7 @@ class Ring extends Phaser.Scene {
             });
             
             this.npcBoxer.update(this.p1Boxer);
-            this.p1Boxer.update(this.input.activePointer);
+            this.p1Boxer.update(this.input.activePointer, this.npcBoxer);
   
           // Check keys
           if (this.keyW.isDown) {
@@ -136,7 +165,26 @@ class Ring extends Phaser.Scene {
               this.p1Boxer.hookRight(this.input.activePointer);
             }
           }  
-      }
+
+          // update health text
+          this.p1HealthText.setText(`Health: ${Math.floor(this.p1Boxer.health)}`);
+          this.npcHealthText.setText(`Health: ${Math.floor(this.npcBoxer.health)}`);
+
+
+          if (this.p1Boxer.health <= 0) {
+              this.p1HealthBar.bar.clear();
+          } else {
+              this.p1HealthBar.bar.clear();
+              this.p1HealthBar.bar.fillStyle(0x00ff00).fillRect(game.config.width / 1.75 - 50, game.config.height - 25, this.p1Boxer.health, 10);
+          }
+      
+          if (this.npcBoxer.health <= 0) {
+              this.npcHealthBar.bar.clear();
+          } else {
+              this.npcHealthBar.bar.clear();
+              this.npcHealthBar.bar.fillStyle(0x00ff00).fillRect(game.config.width / 1.75 - 50, 16, this.npcBoxer.health, 10);
+          }
+        }
     }
     
       

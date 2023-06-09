@@ -7,6 +7,7 @@ class NPCBoxer extends Boxer {
 
         this.leftFist = this.scene.add.circle(20, -this.displayHeight / 2, 8, 0x0000FF).setOrigin(0.9, 0.9);
         this.rightFist = this.scene.add.circle(40, -this.displayHeight / 2, 8, 0x0000FF).setOrigin(0.5, 1.2);
+        this.health = 100;
 
         // Initialize NPC move timer
         this.moveTimer = scene.time.addEvent({
@@ -110,11 +111,13 @@ class NPCBoxer extends Boxer {
                 this.x -= dirX * speed;
             }
         }
+
     
         // Collision detection and resolution
         const npcBody = new Phaser.Geom.Rectangle(this.x, this.y, this.width, this.height);
         const p1Body = new Phaser.Geom.Rectangle(p1Boxer.x, p1Boxer.y, p1Boxer.width, p1Boxer.height);
     
+        // Check for body collisions
         if (Phaser.Geom.Intersects.RectangleToRectangle(npcBody, p1Body)) {
             // If NPC collides with the player, move the NPC away from the player
             const pushDistance = 10;
@@ -125,6 +128,15 @@ class NPCBoxer extends Boxer {
     
             // Reset the rotation to prevent spinning
             this.rotation = 0;
+        }
+
+        // Check for fist collision with body
+        if (Phaser.Geom.Intersects.CircleToRectangle(this.leftFist, p1Body)) {
+            p1Boxer.health -= .5;
+        }
+    
+        if (Phaser.Geom.Intersects.CircleToRectangle(this.rightFist, p1Body)) {
+            p1Boxer.health -= .9;
         }
     
         // Rotate NPC to face towards the player boxer with a 45-degree offset
@@ -158,10 +170,10 @@ class NPCBoxer extends Boxer {
             this.rightFist.setRotation(rotationAngle);
         }    
     
-        if (len < 60) {
+        if (len < 60 && this.leftpunching == false && this.rightpunching == false) {
             let rand = Math.random();
             if (rand < 0.05) {
-                this.decidePunch(p1Boxer);
+                this.decidePunch(p1Boxer.x, p1Boxer.y);
             }
         }
     }
@@ -177,6 +189,8 @@ class NPCBoxer extends Boxer {
         let targetX = this.leftFist.x + punchDistance * Math.cos(angle) + this.velX*8;
         let targetY = this.leftFist.y + punchDistance * Math.sin(angle) + this.velY*8;
 
+        console.log("Target: ", targetX, targetY);
+        console.log("Player: ", )
         // Move fist forward
         this.scene.tweens.add({
         targets: this.leftFist,

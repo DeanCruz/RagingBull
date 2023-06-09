@@ -18,6 +18,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
         this.leftpunching = false;
         this.rightpunching = false;
         this.rotation = 0;
+        this.health = 100;
     
         // Add fists to container
         this.container.add([this, this.leftFist, this.rightFist]);
@@ -27,7 +28,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
         scene.add.existing(this.rightFist);
     }
     
-    update(pointer){
+    update(pointer, npcBoxer){
         // Rotate boxer to face towards mouse pointer with a 45-degree offset
         const angle = Phaser.Math.Angle.Between(
           this.x,
@@ -57,6 +58,18 @@ class Boxer extends Phaser.GameObjects.Sprite {
           const rightFistY = this.y + Math.sin(rightFistAngle) * distance;
           this.rightFist.setPosition(rightFistX, rightFistY);
           this.rightFist.setRotation(rotationAngle);
+      }
+
+      // Collision detection and resolution
+      const npcBody = new Phaser.Geom.Rectangle(npcBoxer.x, npcBoxer.y, npcBoxer.width, npcBoxer.height);
+
+      // Check for fist collision with body
+      if (Phaser.Geom.Intersects.CircleToRectangle(this.leftFist, npcBody)) {
+        npcBoxer.health -= .5;
+      }
+  
+      if (Phaser.Geom.Intersects.CircleToRectangle(this.rightFist, npcBody)) {
+        npcBoxer.health -= .9;
       }
     }
 
@@ -138,33 +151,33 @@ class Boxer extends Phaser.GameObjects.Sprite {
         // When facing up
         if (this.rotation < 0.75 && this.rotation > -0.75){
             targetIx = this.leftFist.x - 25;
-            targetFy = this.rightFist.y - 88;
+            targetFy = this.rightFist.y - 99;
         }
 
         // When facing right
         if (this.rotation >= 0.75 && this.rotation < 2.25){
             targetIy = this.leftFist.y - 25;
-            targetFx = this.rightFist.x + 88;
+            targetFx = this.rightFist.x + 99;
         }
 
         // When facing down
         if (this.rotation >= 2.25 || this.rotation < -2.25){
             targetIx = this.leftFist.x + 25;
-            targetFy = this.rightFist.y + 88;
+            targetFy = this.rightFist.y + 99;
         }
 
         // When facing left
         if (this.rotation <= -0.75 && this.rotation > -2.25){
             targetIy = this.leftFist.y + 25;
-            targetFx = this.rightFist.x - 88;
+            targetFx = this.rightFist.x - 99;
         }
 
         // Calculate the angle between the boxer and the pointer
         const angle = Phaser.Math.Angle.Between(this.leftFist.x, this.leftFist.y, targetFx, targetFy);
 
         // Calculate target position
-        let targetX = this.leftFist.x + Math.cos(angle) * 20 + this.velX*8;
-        let targetY = this.leftFist.y + Math.sin(angle) * 20 + this.velY*8;
+        let targetX = this.leftFist.x + Math.cos(angle) * 30 + this.velX*8;
+        let targetY = this.leftFist.y + Math.sin(angle) * 30 + this.velY*8;
 
 
         // First tween to move fist up
