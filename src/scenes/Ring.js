@@ -32,32 +32,34 @@ class Ring extends Phaser.Scene {
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0x000000).setOrigin(0,0);
         this.add.rectangle(0, 0, borderUISize, game.config.height, 0x000000).setOrigin(0,0);
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0x000000).setOrigin(0,0);
-
+    
         // Define ring parameters
         const ringWidth = 400;
         const ringHeight = 400;
         const ringColor = 0xAAAAAA;
         const ringBorderColor = 0xFF0000;
         const ringBorderThickness = 10;
-        
+    
         const ringX = (game.config.width - ringWidth) / 2;
         const ringY = (game.config.height - ringHeight) / 2;
-
+    
         // Draw ring floor
         this.add.rectangle(ringX, ringY, ringWidth, ringHeight, ringColor).setOrigin(0,0);
-
+    
         // Draw ring border
         this.add.rectangle(ringX, ringY, ringWidth, ringBorderThickness, ringBorderColor).setOrigin(0,0); // Top border
         this.add.rectangle(ringX, ringY + ringHeight - ringBorderThickness, ringWidth, ringBorderThickness, ringBorderColor).setOrigin(0,0); // Bottom border
         this.add.rectangle(ringX, ringY, ringBorderThickness, ringHeight, ringBorderColor).setOrigin(0,0); // Left border
         this.add.rectangle(ringX + ringWidth - ringBorderThickness, ringY, ringBorderThickness, ringHeight, ringBorderColor).setOrigin(0,0); // Right border
-
-        // Create Player
-        this.p1Boxer = new Boxer(this, game.config.width/2, game.config.height/1.2, 'boxer').setOrigin(0.5, 0);
+    
+        // Create Player in bottom left corner of the ring
+        this.p1Boxer = new Boxer(this, ringX + 50, ringY + ringHeight - 50, 'boxer').setOrigin(0.5, 0);
         this.p1Boxer.setScale(2);
-        // Create NPC
-        this.npcBoxer = new NPCBoxer(this, game.config.width/2 - 100, game.config.height/1.2 - 100, 'boxer').setOrigin(0.5, 0);
+    
+        // Create NPC in top right corner of the ring
+        this.npcBoxer = new NPCBoxer(this, ringX + ringWidth - 50, ringY + 50, 'boxer').setOrigin(0.5, 0);
         this.npcBoxer.setScale(2);
+
 
         // create health text
         const healthConfig = {
@@ -96,9 +98,6 @@ class Ring extends Phaser.Scene {
         this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO); 
         this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
         this.key4 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
-
-        // endScreen
-        this.keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update() {
@@ -193,11 +192,10 @@ class Ring extends Phaser.Scene {
           }
         }
     }
-    
     endGame() {
-      // stop loops
+      // end loop
       this.gameOver = true;
-
+  
       // display text
       let scoreConfig = {
           fontFamily: 'Major Mono Display',
@@ -216,15 +214,56 @@ class Ring extends Phaser.Scene {
       this.gameOverText.setColor('#ff0000'); // make the text red
       this.gameOverText.setFontStyle('bold'); // make the text bold
   
+      if (this.p1Boxer.health > 0){
+        this.spaceToStartText = this.add.text(game.config.width / 2, game.config.height / 2 + 30, 'Press SPACE to continue', scoreConfig).setOrigin(0.5);
+      }
+      else
+      {
+        this.spaceToStartText = this.add.text(game.config.width / 2, game.config.height / 2 + 30, 'Press SPACE to restart', scoreConfig).setOrigin(0.5);
+      }
       // space to start end screen
-      this.spaceToStartText = this.add.text(game.config.width / 2, game.config.height / 2 + 30, 'Press SPACE to continue', scoreConfig).setOrigin(0.5);
   
       // store end screen text objects in the array
       this.endScreenText.push(this.gameOverText);
       this.endScreenText.push(this.spaceToStartText);
 
-      if (Phaser.Input.Keyboard.JustDown(this.keySPACE)) {
-        this.scene.start("ringScene", game.settings);
+      // check key input to return to menu
+      if (this.p1Boxer.health > 0){
+        this.spaceKeyDown = () => {
+          if (this.gameOver) {
+            this.reset();
+            this.scene.start("cutScene1", game.settings);
+          }
+        };
+        this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
+      }
+      else{
+        this.spaceKeyDown = () => {
+          if (this.gameOver) {
+            this.reset();
+            this.scene.start("tutorialScene", game.settings);
+          }
+        };
+        this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
       }
     }
+    reset() {
+      // reset health
+      this.p1Boxer.health = 100;  
+      this.npcBoxer.health = 100;  
+      
+      // Reset position
+      const ringWidth = 400;
+      const ringHeight = 400;
+      const ringX = (game.config.width - ringWidth) / 2;
+      const ringY = (game.config.height - ringHeight) / 2;
+      
+      this.p1Boxer.setPosition(ringX + 50, ringY + ringHeight - 50);
+      this.npcBoxer.setPosition(ringX + ringWidth - 50, ringY + 50);
+      
+      // Reset game over flag
+      this.gameOver = false;
+      
+
+  }
 }
