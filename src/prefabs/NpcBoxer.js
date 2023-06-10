@@ -62,7 +62,7 @@ class NPCBoxer extends Boxer {
     }
 
     update(p1Boxer) {
-        let speed = 2;
+        let speed = this.moveSpeed;
     
         // Get the direction towards the player
         let dirX = (p1Boxer.x - this.x);
