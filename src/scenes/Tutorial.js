@@ -25,8 +25,8 @@ class Tutorial extends Phaser.Scene {
         // show menu text
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'I know youve been hit hard,', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'so youve probably forgot how to fight.', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'WASD to move, press Q to jab and E to throw a straight right,', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 70, 'Press Z amd C for left and right hooks, they do more damage', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'WASD to move, press 1 to jab and 2 to throw a straight right,', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 70, 'Press 3 amd 4 for left and right hooks, they do more damage', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + 70, 'Press SPACE to get back in the fight!', textConfig).setOrigin(0.5);
   
         // define keys
