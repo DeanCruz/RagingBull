@@ -16,7 +16,7 @@ class SugarRing extends Phaser.Scene {
         this.endScreenText = [];
 
         // timer
-        this.timer = 10;
+        this.timer = 120;
         this.timerEvent = null;
         this.timerText = null;
     }
