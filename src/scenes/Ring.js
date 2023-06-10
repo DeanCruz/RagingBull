@@ -12,6 +12,8 @@ class Ring extends Phaser.Scene {
         // add text to display health
         this.p1HealthText = null;
         this.npcHealthText = null;
+
+        this.endScreenText = [];
     }
 
     // initialize game settings
@@ -94,6 +96,9 @@ class Ring extends Phaser.Scene {
         this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO); 
         this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
         this.key4 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
+
+        // endScreen
+        this.keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update() {
@@ -170,7 +175,6 @@ class Ring extends Phaser.Scene {
           this.p1HealthText.setText(`Health: ${Math.floor(this.p1Boxer.health)}`);
           this.npcHealthText.setText(`Health: ${Math.floor(this.npcBoxer.health)}`);
 
-
           if (this.p1Boxer.health <= 0) {
               this.p1HealthBar.bar.clear();
           } else {
@@ -184,57 +188,43 @@ class Ring extends Phaser.Scene {
               this.npcHealthBar.bar.clear();
               this.npcHealthBar.bar.fillStyle(0x00ff00).fillRect(game.config.width / 1.75 - 50, 16, this.npcBoxer.health, 10);
           }
+          if (this.p1Boxer.health <= 0 || this.npcBoxer.health <= 0) {
+            this.endGame();
+          }
         }
     }
     
-      
-        
-    
     endGame() {
-        this.gameOver = true;
-        // display text
-        let scoreConfig = {
-            fontFamily: 'Major Mono Display',
-            fontSize: '28px',
-            color: '#DEB64B',
-            align: 'right',
-            padding: {
-            top: 5,
-            bottom: 5,
-            },
-            fixedWidth: 0,
-        };
+      // stop loops
+      this.gameOver = true;
 
-        // end screen text
-        this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 128, 'KO', scoreConfig).setOrigin(0.5);
-        // space to start end screen
-        this.spaceToStartText = this.add.text(game.config.width / 2, game.config.height / 2 - 64, 'Press SPACE to restart', scoreConfig).setOrigin(0.5);
+      // display text
+      let scoreConfig = {
+          fontFamily: 'Major Mono Display',
+          fontSize: '28px',
+          color: '#DEB64B',
+          align: 'right',
+          padding: {
+              top: 5,
+              bottom: 5,
+          },
+          fixedWidth: 0,
+      };
+  
+      // end screen text
+      this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'KO', scoreConfig).setOrigin(0.5);
+      this.gameOverText.setColor('#ff0000'); // make the text red
+      this.gameOverText.setFontStyle('bold'); // make the text bold
+  
+      // space to start end screen
+      this.spaceToStartText = this.add.text(game.config.width / 2, game.config.height / 2 + 30, 'Press SPACE to continue', scoreConfig).setOrigin(0.5);
+  
+      // store end screen text objects in the array
+      this.endScreenText.push(this.gameOverText);
+      this.endScreenText.push(this.spaceToStartText);
 
-        // store end screen text objects in the array
-        this.endScreenText.push(this.gameOverText);
-        this.endScreenText.push(this.spaceToStartText);
-
-        // check key input to return to menu
-        this.spaceKeyDown = () => {
-            if (this.gameOver) {
-                this.resetGame();
-                // remove listener
-                this.input.keyboard.removeListener('keydown-SPACE', this.spaceKeyDown);
-            }
-        };
-        this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
+      if (Phaser.Input.Keyboard.JustDown(this.keySPACE)) {
+        this.scene.start("ringScene", game.settings);
+      }
     }
-
-    resetGame() {    
-        // reset rockets and spaceships
-        this.p1Boxer.reset();
-
-        // restart loop
-        this.gameOver = false;
-    }
-
-    // hideEndScreen() {
-    //     // hide text after restarting game
-    //     this.endScreenText.forEach(text => text.visible = false);
-    // }
 }

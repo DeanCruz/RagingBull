@@ -74,7 +74,7 @@ class NPCBoxer extends Boxer {
         dirY /= len;
     
         // Check if the NPC is within 15 pixels of p1Boxer
-        if (len < 30) {
+        if (len < 20) {
             // Back up from p1Boxer
             this.x -= dirX * speed;
             this.y -= dirY * speed;
@@ -109,6 +109,13 @@ class NPCBoxer extends Boxer {
                 this.x += dirX * speed;
             } else if (this.moveState == 'right') {
                 this.x -= dirX * speed;
+            }
+            
+            if (len <= 30 && this.leftpunching == false && this.rightpunching == false) {
+                let rand = Math.random();
+                if (rand < 0.05) {
+                    this.decidePunch(p1Boxer.x, p1Boxer.y);
+                }
             }
         }
 
@@ -169,13 +176,6 @@ class NPCBoxer extends Boxer {
             this.rightFist.setPosition(rightFistX, rightFistY);
             this.rightFist.setRotation(rotationAngle);
         }    
-    
-        if (len < 60 && this.leftpunching == false && this.rightpunching == false) {
-            let rand = Math.random();
-            if (rand < 0.05) {
-                this.decidePunch(p1Boxer.x, p1Boxer.y);
-            }
-        }
     }
     
     // Left Jab
@@ -207,18 +207,8 @@ class NPCBoxer extends Boxer {
 
     // Right Cross
     punchRight(x, y) {
-
         const punchDistance = 44;
-        var p1BoxerX = 0;
-
-        // Calculate the angle between the boxer and p1Boxer
-        if (y < this.rightFist.y){
-            p1BoxerX = x - 40;
-        }
-        else{
-            p1BoxerX = x + 40;
-        }
-        const angle = Phaser.Math.Angle.Between(this.rightFist.x, this.rightFist.y, p1BoxerX, y);
+        const angle = Phaser.Math.Angle.Between(this.rightFist.x, this.rightFist.y, x, y);
 
         // Calculate target position
         let targetX = this.rightFist.x + punchDistance * Math.cos(angle) + this.velX*8;
