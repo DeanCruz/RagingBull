@@ -1,6 +1,6 @@
-class CutScene1 extends Phaser.Scene {
+class CutScene2 extends Phaser.Scene {
     constructor() {
-        super("cutScene1");
+        super("cutScene2");
     }
   
     preload() {
@@ -23,10 +23,9 @@ class CutScene1 extends Phaser.Scene {
         }
         
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'Ladies and Gentlemen, the winner!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'under the rules of the Cleveland', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'Boxing Commission, after ten', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 70, 'rounds, by a decision -- Jimmy Reeves!', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'Your opponent is Sugar Ray Robinson', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'He is fast, so stay light on your feet', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'You got this, get in there!', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + 70, 'Press SPACE to continue', textConfig).setOrigin(0.5);
 
         // define keys
@@ -35,7 +34,7 @@ class CutScene1 extends Phaser.Scene {
   
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-          this.scene.start("cutScene2", game.settings);
+          this.scene.start("sugarRing", game.settings);
         }
       }
   }
