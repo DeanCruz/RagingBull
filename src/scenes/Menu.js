@@ -10,18 +10,18 @@ class Menu extends Phaser.Scene {
   
   create() {
       // menu text configuration
-      let menuConfig = {
-          fontFamily: 'Major Mono Display',
-          fontSize: '28px',
-          color: '#FFFFFF',
-          align: 'right',
-          padding: {
-              top: 5,
-              bottom: 5,
-          },
-          fixedWidth: 0
-      }
-      let titleConfig = {
+    let menuConfig = {
+        fontFamily: 'Major Mono Display',
+        fontSize: '28px',
+        color: '#FFFFFF',
+        align: 'right',
+        padding: {
+            top: 5,
+            bottom: 5,
+        },
+        fixedWidth: 0
+    }
+    let titleConfig = {
         fontFamily: 'Major Mono Display',
         fontSize: '48px', 
         color: '#FFFFFF',
@@ -33,19 +33,17 @@ class Menu extends Phaser.Scene {
         fixedWidth: 0
     }    
 
-      this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0,0);
-      
-      // show menu text
-      this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'Raging Bull', titleConfig).setOrigin(0.5);
-      this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press space to start', menuConfig).setOrigin(0.5);
+    // show menu text
+    this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'Raging Bull', titleConfig).setOrigin(0.5);
+    this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press space to start', menuConfig).setOrigin(0.5);
 
-      // define keys
-      keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    // define keys
+    keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   }
 
   update() {
       if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-        this.scene.start("ringScene", game.settings);
+        this.scene.start("introScene", game.settings);
       }
     }
 }
