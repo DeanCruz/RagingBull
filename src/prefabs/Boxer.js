@@ -5,7 +5,6 @@ class Boxer extends Phaser.GameObjects.Sprite {
         // Creating a container for the boxer and fists
         this.container = this.scene.add.container(x, y);
         this.container.setSize(this.width, this.height);
-        this.NPCState = false;
     
         // Track movement
         this.moveSpeed = 2;
@@ -15,6 +14,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
         this.leftFist = this.scene.add.circle(20, -this.displayHeight / 2, 8, 0xFF0000).setOrigin(.9, .9);
         this.rightFist = this.scene.add.circle(40, -this.displayHeight / 2, 8, 0xFF0000).setOrigin(.5, 1.2);
 
+        this.punchingstate = 'none';
         this.leftpunching = false;
         this.rightpunching = false;
         this.rotation = 0;
@@ -65,11 +65,23 @@ class Boxer extends Phaser.GameObjects.Sprite {
 
       // Check for fist collision with body
       if (Phaser.Geom.Intersects.CircleToRectangle(this.leftFist, npcBody)) {
-        npcBoxer.health -= .5;
+        if (this.punchingstate == 'lefthook')
+        {
+            npcBoxer.health -= 1;
+        }
+        else{
+            npcBoxer.health -= .5;
+        }
       }
   
       if (Phaser.Geom.Intersects.CircleToRectangle(this.rightFist, npcBody)) {
-        npcBoxer.health -= .9;
+        if (this.punchingstate == 'righthook')
+        {
+            npcBoxer.health -= 1.8;
+        }
+        else{
+            npcBoxer.health -= .9;
+        }
       }
     }
 
@@ -85,6 +97,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
 
     // Left Jab
     punchLeft(pointer) {
+        this.punchingstate = 'jab';
         const punchDistance = 33;
       
         // Calculate the angle between the boxer and the pointer
@@ -110,6 +123,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
 
       // Right Cross
       punchRight(pointer) {
+        this.punchingstate = 'cross';
         if (!pointer || typeof pointer.x === 'undefined' || typeof pointer.y === 'undefined') {
             console.error('Invalid pointer object:', pointer);
             return;
@@ -144,6 +158,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
     
       // Left hook
       hookLeft(pointer) {
+        this.punchingstate = 'lefthook';
         // Initial target
         let targetIx = this.leftFist.x, targetIy = this.leftFist.y;
         // Final target angle
@@ -206,6 +221,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
     
     // Right hook
     hookRight(pointer) {
+        this.punchingstate = 'righthook';
         // Initial target
         let targetIx = this.rightFist.x, targetIy = this.rightFist.y;
         // Final target angle
