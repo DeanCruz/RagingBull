@@ -4,7 +4,7 @@ let config = {
     type: Phaser.CANVAS,
     width: 640,
     height: 480,
-    scene: [ Menu, Intro, Tutorial, Ring, CutScene1],
+    scene: [ Menu, Intro, Tutorial, Ring, CutScene1, CutScene1Alt],
     physics: {
         default: 'arcade',
         arcade: {
