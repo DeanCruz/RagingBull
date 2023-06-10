@@ -14,6 +14,11 @@ class Ring extends Phaser.Scene {
         this.npcHealthText = null;
 
         this.endScreenText = [];
+
+        // timer
+        this.timer = 30;
+        this.timerEvent = null;
+        this.timerText = null;
     }
 
     // initialize game settings
@@ -98,6 +103,23 @@ class Ring extends Phaser.Scene {
         this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO); 
         this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
         this.key4 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
+        
+        // Initialize timer
+        this.timerEvent = this.time.addEvent({ delay: 1000, callback: this.updateTimer, callbackScope: this, loop: true });
+
+        // Create timer text
+        const timerConfig = {
+            fontFamily: 'Courier',
+            fontSize: '14px',
+            color: '#ffffff',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0,
+        };
+        this.timerText = this.add.text(20, 20, `Time: ${this.timer}`, timerConfig).setOrigin(0);
     }
 
     update() {
@@ -190,8 +212,21 @@ class Ring extends Phaser.Scene {
           if (this.p1Boxer.health <= 0 || this.npcBoxer.health <= 0) {
             this.endGame();
           }
+
+          // Update timer text
+          this.timerText.setText(`Time: ${this.timer}`);
+              
+          // End game if timer is zero
+          if (this.timer <= 0) {
+              this.endGame();
+          }
         }
     }
+
+    updateTimer() {
+        this.timer--;
+    }
+
     endGame() {
       // end loop
       this.gameOver = true;
@@ -210,12 +245,23 @@ class Ring extends Phaser.Scene {
       };
   
       // end screen text
-      this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'KO', scoreConfig).setOrigin(0.5);
+      if (this.npcBoxer.health <= 0 || this.p1Boxer.health <= 0)
+      {
+        this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'KO', scoreConfig).setOrigin(0.5);
+      }
+      else
+      {
+        this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'Round 10 Over', scoreConfig).setOrigin(0.5);
+      }
+      
       this.gameOverText.setColor('#ff0000'); // make the text red
       this.gameOverText.setFontStyle('bold'); // make the text bold
   
-      if (this.p1Boxer.health > 0){
+      if (this.npcBoxer.health <= 0){
         this.spaceToStartText = this.add.text(game.config.width / 2, game.config.height / 2 + 30, 'Press SPACE to continue', scoreConfig).setOrigin(0.5);
+      }
+      else if (this.p1Boxer.health > 0){
+        this.spaceToStartText = this.add.text(game.config.width / 2, game.config.height / 2 + 30, 'Press SPACE to see judges decision', scoreConfig).setOrigin(0.5);
       }
       else
       {
@@ -228,7 +274,7 @@ class Ring extends Phaser.Scene {
       this.endScreenText.push(this.spaceToStartText);
 
       // check key input to return to menu
-      if (this.p1Boxer.health > 0){
+      if (this.timer <= 0){
         this.spaceKeyDown = () => {
           if (this.gameOver) {
             this.reset();
@@ -237,7 +283,16 @@ class Ring extends Phaser.Scene {
         };
         this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
       }
-      else{
+      else if (this.p1Boxer.health > 0){
+        this.spaceKeyDown = () => {
+          if (this.gameOver) {
+            this.reset();
+            this.scene.start("cutScene1Alt", game.settings);
+          }
+        };
+        this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
+      }
+      else {
         this.spaceKeyDown = () => {
           if (this.gameOver) {
             this.reset();
@@ -249,6 +304,7 @@ class Ring extends Phaser.Scene {
     }
     reset() {
       // reset health
+      this.timer = 30;
       this.p1Boxer.health = 100;  
       this.npcBoxer.health = 100;  
       
