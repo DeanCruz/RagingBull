@@ -1,6 +1,6 @@
-class CutScene1Alt extends Phaser.Scene {
+class CutScene2pt2 extends Phaser.Scene {
     constructor() {
-        super("cutScene1Alt");
+        super("cutScene2pt2");
     }
   
     preload() {
@@ -23,10 +23,10 @@ class CutScene1Alt extends Phaser.Scene {
         }
         
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'Ladies and Gentlemen, the winner!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'By KNOCKOUT, Jake LaMotta!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'Great job!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 70, 'You werent even supposed to win this fight!', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'Use your power to take him out!', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, '(Press R to activate Raging Bull for 5 secs)', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'Use that inner rage to win this fight!', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 70, 'You got this, get in there!', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + 70, 'Press SPACE to continue', textConfig).setOrigin(0.5);
 
         // define keys
@@ -35,7 +35,7 @@ class CutScene1Alt extends Phaser.Scene {
   
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-          this.scene.start("trainingScene", game.settings);
+          this.scene.start("sugarRing", game.settings);
         }
       }
   }

@@ -1,6 +1,6 @@
-class CutScene1Alt extends Phaser.Scene {
+class CutScene4pt1 extends Phaser.Scene {
     constructor() {
-        super("cutScene1Alt");
+        super("cutScene4pt1");
     }
   
     preload() {
@@ -23,10 +23,8 @@ class CutScene1Alt extends Phaser.Scene {
         }
         
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'Ladies and Gentlemen, the winner!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'By KNOCKOUT, Jake LaMotta!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'Great job!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 70, 'You werent even supposed to win this fight!', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'Fight Night:', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'The Middle Weight Title', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + 70, 'Press SPACE to continue', textConfig).setOrigin(0.5);
 
         // define keys
@@ -35,7 +33,7 @@ class CutScene1Alt extends Phaser.Scene {
   
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-          this.scene.start("trainingScene", game.settings);
+          this.scene.start("cutScene4pt2", game.settings);
         }
       }
   }

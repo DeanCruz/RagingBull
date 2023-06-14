@@ -105,10 +105,15 @@ class Ring extends Phaser.Scene {
         
         this.rageTextLeft = this.add.text(ringX - 60, ringY + ringHeight / 2, 'RAGING', this.rageTextConfig).setOrigin(0.5);
         this.rageTextRight = this.add.text(ringX + ringWidth + 60, ringY + ringHeight / 2, 'BULL', this.rageTextConfig).setOrigin(0.5);
+        this.rageTextLeft.setFontStyle('bold');
+        this.rageTextRight.setFontStyle('bold');
         
         // Initially hide the text
         this.rageTextLeft.setVisible(false);
         this.rageTextRight.setVisible(false);
+        
+
+
       
 
         // Health bars
@@ -319,15 +324,31 @@ class Ring extends Phaser.Scene {
       // end screen text
       if (this.npcBoxer.health <= 0 || this.p1Boxer.health <= 0)
       {
-        this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'KO', scoreConfig).setOrigin(0.5);
+        this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 60, 'KO', scoreConfig).setOrigin(0.5);
+        this.gameOverText.setColor('#ff0000'); 
+        this.gameOverText.setFontStyle('bold');
+
+        if (this.npcBoxer.health <= 0){
+          this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'You Win', scoreConfig).setOrigin(0.5);
+        }
+        else{
+          this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'You Lose', scoreConfig).setOrigin(0.5);
+        }
       }
       else
       {
-        this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'Round 10 Over', scoreConfig).setOrigin(0.5);
+        this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 60, 'Round 10 Over', scoreConfig).setOrigin(0.5);
+        this.gameOverText.setColor('#ff0000'); 
+        this.gameOverText.setFontStyle('bold');
+
+        if (this.npcBoxer.health <= this.p1Boxer.health){
+          this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'You Win', scoreConfig).setOrigin(0.5);
+        }
+        else{
+          this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'You Lose', scoreConfig).setOrigin(0.5);
+        }
       }
-      
       this.gameOverText.setColor('#ff0000'); // make the text red
-      this.gameOverText.setFontStyle('bold'); // make the text bold
   
       if (this.npcBoxer.health <= 0){
         this.spaceToStartText = this.add.text(game.config.width / 2, game.config.height / 2 + 30, 'Press SPACE to continue', scoreConfig).setOrigin(0.5);
@@ -427,6 +448,8 @@ class Ring extends Phaser.Scene {
 
       // Hide pause menu
       this.showPauseMenu(false);  
+
+      // Disable raging bull ability
       this.p1Boxer.rage = false;
       this.p1Boxer.hasUsedRage = false;
       this.p1Boxer.setScale(this.initialScale);

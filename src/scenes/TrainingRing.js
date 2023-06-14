@@ -1,10 +1,13 @@
-class SugarRing extends Phaser.Scene {
+class TrainingRing extends Phaser.Scene {
     constructor() {
-        super("sugarRing");
+        super("trainingRing");
 
         // used to stop updating fists while punching
         this.leftpunching = false;
         this.rightpunching = false;
+
+        // set boxer scale
+        this.initialScale = 2;
 
         // add text to display time
         this.timeText = null;
@@ -16,10 +19,10 @@ class SugarRing extends Phaser.Scene {
         this.endScreenText = [];
 
         // timer
-        this.timer = 120;
+        this.timer = 60;
         this.timerEvent = null;
         this.timerText = null;
-
+        
         // add text and buttons for pause menu
         this.pauseText = null;
         this.restartButton = null;
@@ -65,14 +68,11 @@ class SugarRing extends Phaser.Scene {
     
         // Create Player in bottom left corner of the ring
         this.p1Boxer = new Boxer(this, ringX + 50, ringY + ringHeight - 50, 'boxer').setOrigin(0.5, 0);
-        this.p1Boxer.setScale(2);
+        this.p1Boxer.setScale(this.initialScale);
     
         // Create NPC in top right corner of the ring
         this.npcBoxer = new NPCBoxer(this, ringX + ringWidth - 50, ringY + 50, 'boxer').setOrigin(0.5, 0);
-        this.npcBoxer.setScale(2);
-
-        // Sugar Ray attributes
-        this.npcBoxer.moveSpeed = 3.33;
+        this.npcBoxer.setScale(this.initialScale);
 
 
         // create health text
@@ -92,21 +92,24 @@ class SugarRing extends Phaser.Scene {
 
         // Special ability text
         this.rageTextConfig = {
-          fontFamily: 'Courier',
-          fontSize: '28px',
-          color: '#FF0000',
-          align: 'center',
-          padding: {
-              top: 5,
-              bottom: 5,
-          },
-          fixedWidth: 0,
-      };
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            color: '#FF0000',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0,
+        };
+        
+        this.rageTextLeft = this.add.text(ringX - 60, ringY + ringHeight / 2, 'RAGING', this.rageTextConfig).setOrigin(0.5);
+        this.rageTextRight = this.add.text(ringX + ringWidth + 60, ringY + ringHeight / 2, 'BULL', this.rageTextConfig).setOrigin(0.5);
+        
+        // Initially hide the text
+        this.rageTextLeft.setVisible(false);
+        this.rageTextRight.setVisible(false);
       
-      this.rageTextLeft = this.add.text(ringX - 60, ringY + ringHeight / 2, 'RAGING', this.rageTextConfig).setOrigin(0.5);
-      this.rageTextRight = this.add.text(ringX + ringWidth + 60, ringY + ringHeight / 2, 'BULL', this.rageTextConfig).setOrigin(0.5);
-      this.rageTextLeft.setFontStyle('bold');
-      this.rageTextRight.setFontStyle('bold');
 
         // Health bars
         this.p1HealthBar = {
@@ -162,7 +165,6 @@ class SugarRing extends Phaser.Scene {
     }
 
     update() {
-      console.log(this.npcBoxer.moveSpeed)
         if (!this.gameOver && !this.isPaused) {
           // Boxing ring boundaries
           const ringX = (game.config.width - 390) / 2;
@@ -205,26 +207,29 @@ class SugarRing extends Phaser.Scene {
           } else {
             this.p1Boxer.velX = 0;
           }
-          
+
+          // Left jab
           if (Phaser.Input.Keyboard.JustDown(this.key1)) {
             if (!this.p1Boxer.leftpunching) {
               this.p1Boxer.leftpunching = true;
               this.p1Boxer.punchLeft(this.input.activePointer);
             }
           }
-          
+          // Right cross
           if (Phaser.Input.Keyboard.JustDown(this.key2)) {
             if (!this.p1Boxer.rightpunching) {
               this.p1Boxer.rightpunching = true;
               this.p1Boxer.punchRight(this.input.activePointer);
             }
           }
+          // Left hook
           if (Phaser.Input.Keyboard.JustDown(this.key3)) {
             if (!this.p1Boxer.leftpunching) {
               this.p1Boxer.leftpunching = true;
               this.p1Boxer.hookLeft(this.input.activePointer);
             }
           }
+          // Right hook
           if (Phaser.Input.Keyboard.JustDown(this.key4)) {
             if (!this.p1Boxer.rightpunching) {
               this.p1Boxer.rightpunching = true;
@@ -243,11 +248,13 @@ class SugarRing extends Phaser.Scene {
               this.rageTextLeft.setVisible(false);
               this.rageTextRight.setVisible(false);
           }
+          // Pause menu
           if (Phaser.Input.Keyboard.JustDown(this.keyEsc)) {
-            this.isPaused = true;  // Toggle pause status
+            this.isPaused = true;  
             console.log(this.gameOver);
             this.showPauseMenu(this.isPaused);
           }
+          
 
           // update health text
           this.p1HealthText.setText(`Health: ${Math.floor(this.p1Boxer.health)}`);
@@ -336,7 +343,6 @@ class SugarRing extends Phaser.Scene {
           this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'You Lose', scoreConfig).setOrigin(0.5);
         }
       }
-      
       this.gameOverText.setColor('#ff0000'); // make the text red
   
       if (this.npcBoxer.health <= 0){
@@ -357,30 +363,19 @@ class SugarRing extends Phaser.Scene {
 
       // check key input to return to menu
       if (this.timer <= 0){
-        if (this.p1Boxer.health >= (this.npcBoxer.health)){
-          this.spaceKeyDown = () => {
-            if (this.gameOver) {
-              this.reset();
-              this.scene.start("cutScene3Alt1", game.settings);
-            }
-          };
-          this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
-        }
-        else{
-          this.spaceKeyDown = () => {
-            if (this.gameOver) {
-              this.reset();
-              this.scene.start("cutScene3Alt2", game.settings);
-            }
-          };
-          this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
-        }
+        this.spaceKeyDown = () => {
+          if (this.gameOver) {
+            this.reset();
+            this.scene.start("trainingComplete", game.settings);
+          }
+        };
+        this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
       }
       else if (this.p1Boxer.health > 0){
         this.spaceKeyDown = () => {
           if (this.gameOver) {
             this.reset();
-            this.scene.start("cutScene3", game.settings);
+            this.scene.start("trainingComplete", game.settings);
           }
         };
         this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
@@ -389,7 +384,7 @@ class SugarRing extends Phaser.Scene {
         this.spaceKeyDown = () => {
           if (this.gameOver) {
             this.reset();
-            this.scene.start("cutScene2", game.settings);
+            this.scene.start("trainingScene", game.settings);
           }
         };
         this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
@@ -429,7 +424,7 @@ class SugarRing extends Phaser.Scene {
     }
     reset() {
       // reset health
-      this.timer = 120;
+      this.timer = 60;
       this.p1Boxer.health = 100;  
       this.npcBoxer.health = 100;  
       
@@ -453,5 +448,5 @@ class SugarRing extends Phaser.Scene {
       this.p1Boxer.rage = false;
       this.p1Boxer.hasUsedRage = false;
       this.p1Boxer.setScale(this.initialScale);
-  }
+    }
 }
