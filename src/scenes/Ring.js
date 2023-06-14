@@ -19,6 +19,12 @@ class Ring extends Phaser.Scene {
         this.timer = 30;
         this.timerEvent = null;
         this.timerText = null;
+        
+        // add text and buttons for pause menu
+        this.pauseText = null;
+        this.restartButton = null;
+        this.mainMenuButton = null;
+        this.isPaused = false;
     }
 
     // initialize game settings
@@ -103,6 +109,15 @@ class Ring extends Phaser.Scene {
         this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO); 
         this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
         this.key4 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
+
+        // Esc key for pause menu
+        this.keyEsc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+        // create pause menu
+        this.createPauseMenu();
+
+        // Initially the pause menu is hidden
+        this.showPauseMenu(false);
         
         // Initialize timer
         this.timerEvent = this.time.addEvent({ delay: 1000, callback: this.updateTimer, callbackScope: this, loop: true });
@@ -123,7 +138,7 @@ class Ring extends Phaser.Scene {
     }
 
     update() {
-        if (!this.gameOver) {
+        if (!this.gameOver && !this.isPaused) {
           // Boxing ring boundaries
           const ringX = (game.config.width - 390) / 2;
           const ringY = (game.config.height - 380) / 2;
@@ -191,6 +206,11 @@ class Ring extends Phaser.Scene {
               this.p1Boxer.hookRight(this.input.activePointer);
             }
           }  
+          if (Phaser.Input.Keyboard.JustDown(this.keyEsc)) {
+            this.isPaused = true;  // Toggle pause status
+            console.log(this.gameOver);
+            this.showPauseMenu(this.isPaused);
+          }
 
           // update health text
           this.p1HealthText.setText(`Health: ${Math.floor(this.p1Boxer.health)}`);
@@ -221,6 +241,13 @@ class Ring extends Phaser.Scene {
               this.endGame();
           }
         }
+        else if(this.isPaused) {
+          if (Phaser.Input.Keyboard.JustDown(this.keyEsc)) {
+            this.isPaused = false;  // Toggle pause status
+            console.log(this.gameOver);
+            this.showPauseMenu(this.isPaused);
+          }
+        }
     }
 
     updateTimer() {
@@ -230,6 +257,7 @@ class Ring extends Phaser.Scene {
     endGame() {
       // end loop
       this.gameOver = true;
+      this.isPaused = false;
   
       // display text
       let scoreConfig = {
@@ -302,6 +330,38 @@ class Ring extends Phaser.Scene {
         this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
       }
     }
+    createPauseMenu() {
+      const menuConfig = {
+          fontFamily: 'Courier',
+          fontSize: '28px',
+          color: '#ffffff',
+          align: 'center',
+          padding: {
+              top: 5,
+              bottom: 5,
+          },
+          fixedWidth: 0,
+      };
+
+      // create pause text
+      this.pauseText = this.add.text(game.config.width / 2, game.config.height / 3, 'PAUSED', menuConfig).setOrigin(0.5);
+
+      // create restart button
+      this.restartButton = this.add.text(game.config.width / 2, game.config.height / 2, 'Restart', menuConfig).setOrigin(0.5);
+      this.restartButton.setInteractive({ useHandCursor: true });
+      this.restartButton.on('pointerdown', () => this.reset());
+
+      // create main menu button
+      this.mainMenuButton = this.add.text(game.config.width / 2, game.config.height / 2 + 100, 'Main Menu', menuConfig).setOrigin(0.5);
+      this.mainMenuButton.setInteractive({ useHandCursor: true });
+      this.mainMenuButton
+      .on('pointerdown', () => this.scene.start('menuScene'));
+    }
+    showPauseMenu(show) {
+        this.pauseText.visible = show;
+        this.restartButton.visible = show;
+        this.mainMenuButton.visible = show;
+    }
     reset() {
       // reset health
       this.timer = 30;
@@ -319,7 +379,10 @@ class Ring extends Phaser.Scene {
       
       // Reset game over flag
       this.gameOver = false;
-      
+      this.isPaused = false;
 
-  }
+      // Hide pause menu
+      this.showPauseMenu(false);  
+        
+    }
 }
