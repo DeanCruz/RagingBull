@@ -67,20 +67,20 @@ class Boxer extends Phaser.GameObjects.Sprite {
       if (Phaser.Geom.Intersects.CircleToRectangle(this.leftFist, npcBody)) {
         if (this.punchingstate == 'lefthook')
         {
-            npcBoxer.health -= .4;
+            npcBoxer.health -= .6;
         }
         else{
-            npcBoxer.health -= .2;
+            npcBoxer.health -= .3;
         }
       }
   
       if (Phaser.Geom.Intersects.CircleToRectangle(this.rightFist, npcBody)) {
         if (this.punchingstate == 'righthook')
         {
-            npcBoxer.health -= .6;
+            npcBoxer.health -= .9;
         }
         else{
-            npcBoxer.health -= .3;
+            npcBoxer.health -= .6;
         }
       }
     }
