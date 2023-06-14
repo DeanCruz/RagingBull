@@ -427,6 +427,8 @@ class Ring extends Phaser.Scene {
 
       // Hide pause menu
       this.showPauseMenu(false);  
+
+      // Disable raging bull ability
       this.p1Boxer.rage = false;
       this.p1Boxer.hasUsedRage = false;
       this.p1Boxer.setScale(this.initialScale);

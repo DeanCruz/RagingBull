@@ -90,6 +90,22 @@ class SugarRing extends Phaser.Scene {
         this.p1HealthText = this.add.text(game.config.width / 2.5, game.config.height - 20, `Health: ${this.p1Boxer.health}`, healthConfig).setOrigin(0.5);
         this.npcHealthText = this.add.text(game.config.width / 2.5, 20, `Health: ${this.npcBoxer.health}`, healthConfig).setOrigin(0.5);
 
+        // Special ability text
+        this.rageTextConfig = {
+          fontFamily: 'Courier',
+          fontSize: '28px',
+          color: '#FF0000',
+          align: 'center',
+          padding: {
+              top: 5,
+              bottom: 5,
+          },
+          fixedWidth: 0,
+      };
+      
+      this.rageTextLeft = this.add.text(ringX - 60, ringY + ringHeight / 2, 'RAGING', this.rageTextConfig).setOrigin(0.5);
+      this.rageTextRight = this.add.text(ringX + ringWidth + 60, ringY + ringHeight / 2, 'BULL', this.rageTextConfig).setOrigin(0.5);
+
         // Health bars
         this.p1HealthBar = {
             background: this.add.graphics().fillStyle(0xff0000).fillRect(game.config.width / 1.75 - 50, game.config.height - 25, 100, 10),
@@ -112,6 +128,9 @@ class SugarRing extends Phaser.Scene {
         this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO); 
         this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
         this.key4 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
+
+        // special ability raging bull
+        this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
         // Esc key for pause menu
         this.keyEsc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -210,6 +229,18 @@ class SugarRing extends Phaser.Scene {
               this.p1Boxer.hookRight(this.input.activePointer);
             }
           }  
+          // Special ability x2 dmg
+          if (Phaser.Input.Keyboard.JustDown(this.keyR)) {
+            this.p1Boxer.RagingBull();
+          }
+          // If special ability pressed, display text
+          if (this.p1Boxer.rage) {
+              this.rageTextLeft.setVisible(true);
+              this.rageTextRight.setVisible(true);
+          } else {
+              this.rageTextLeft.setVisible(false);
+              this.rageTextRight.setVisible(false);
+          }
           if (Phaser.Input.Keyboard.JustDown(this.keyEsc)) {
             this.isPaused = true;  // Toggle pause status
             console.log(this.gameOver);
@@ -399,5 +430,9 @@ class SugarRing extends Phaser.Scene {
       // Hide pause menu
       this.showPauseMenu(false);  
 
+      // Disable raging bull ability
+      this.p1Boxer.rage = false;
+      this.p1Boxer.hasUsedRage = false;
+      this.p1Boxer.setScale(this.initialScale);
   }
 }

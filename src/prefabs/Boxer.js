@@ -72,19 +72,19 @@ class Boxer extends Phaser.GameObjects.Sprite {
         if (this.punchingstate == 'lefthook')
         {
             if(this.rage){
-                npcBoxer.health -= 1.2;
+                npcBoxer.health -= .8;
             }
             else{
-                npcBoxer.health -= .6;
+                npcBoxer.health -= .4;
             }
             
         }
         else{
             if(this.rage){
-                npcBoxer.health -= .6;
+                npcBoxer.health -= .4;
             }
             else{
-                npcBoxer.health -= .3;
+                npcBoxer.health -= .2;
             }
         }
       }
@@ -93,18 +93,18 @@ class Boxer extends Phaser.GameObjects.Sprite {
         if (this.punchingstate == 'righthook')
         {
             if(this.rage){
-                npcBoxer.health -= 1.8;
-            }
-            else{
-                npcBoxer.health -= .9;
-            }
-        }
-        else{
-            if(this.rage){
                 npcBoxer.health -= 1.2;
             }
             else{
                 npcBoxer.health -= .6;
+            }
+        }
+        else{
+            if(this.rage){
+                npcBoxer.health -= .8;
+            }
+            else{
+                npcBoxer.health -= .4;
             }
         }
       }
@@ -317,7 +317,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
             // Activates the rage toggle
             this.rage = true;
     
-            // Make sure the RagingBull can't be used again in the same fight
+            // Make sure the RagingBull can only be used 2 times
             this.hasUsedRage = true;
     
             // Use Phaser's delayedCall to revert the changes after 5 seconds
@@ -325,8 +325,6 @@ class Boxer extends Phaser.GameObjects.Sprite {
                 this.setScale(this.originalScale.x, this.originalScale.y);
                 this.rage = false;
             });
-        } else {
-            console.warn("RagingBull ability has already been used in this fight!");
-        }
+        } 
     }
 }
