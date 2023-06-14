@@ -1,6 +1,6 @@
-class TrainingComplete extends Phaser.Scene {
+class CutScene4pt1 extends Phaser.Scene {
     constructor() {
-        super("trainingComplete");
+        super("cutScene4pt1");
     }
   
     preload() {
@@ -23,9 +23,8 @@ class TrainingComplete extends Phaser.Scene {
         }
         
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'Good work out there!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'Remember to use that rage in your upcoming fights.', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'Do you think youre ready for your next fight?', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'Fight Night:', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'The Middle Weight Title', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + 70, 'Press SPACE to continue', textConfig).setOrigin(0.5);
 
         // define keys
@@ -34,7 +33,7 @@ class TrainingComplete extends Phaser.Scene {
   
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-          this.scene.start("cutScene2", game.settings);
+          this.scene.start("cutScene4pt2", game.settings);
         }
       }
   }

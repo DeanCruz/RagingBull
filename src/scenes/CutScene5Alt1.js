@@ -1,6 +1,6 @@
-class CutScene3Alt1 extends Phaser.Scene {
+class CutScene5Alt1 extends Phaser.Scene {
     constructor() {
-        super("cutScene3Alt1");
+        super("cutScene5Alt1");
     }
   
     preload() {
@@ -36,8 +36,8 @@ class CutScene3Alt1 extends Phaser.Scene {
         // show menu text
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'Ladies and Gentlemen, the winner!', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'By Decision, Jake LaMotta!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'Great job!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 70, 'Sugar Ray Robinson was a tough opponent!', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'Congratulations!', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 70, 'You are now the middle weight champion!', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + 70, 'Press SPACE to continue', smallConfig).setOrigin(0.5);
 
         // define keys
@@ -46,7 +46,7 @@ class CutScene3Alt1 extends Phaser.Scene {
   
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-          this.scene.start("cutScene4", game.settings);
+          this.scene.start("credits", game.settings);
         }
       }
   }

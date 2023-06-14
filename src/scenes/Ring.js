@@ -105,10 +105,15 @@ class Ring extends Phaser.Scene {
         
         this.rageTextLeft = this.add.text(ringX - 60, ringY + ringHeight / 2, 'RAGING', this.rageTextConfig).setOrigin(0.5);
         this.rageTextRight = this.add.text(ringX + ringWidth + 60, ringY + ringHeight / 2, 'BULL', this.rageTextConfig).setOrigin(0.5);
+        this.rageTextLeft.setFontStyle('bold');
+        this.rageTextRight.setFontStyle('bold');
         
         // Initially hide the text
         this.rageTextLeft.setVisible(false);
         this.rageTextRight.setVisible(false);
+        
+
+
       
 
         // Health bars

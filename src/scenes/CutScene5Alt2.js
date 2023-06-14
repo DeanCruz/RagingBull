@@ -1,6 +1,6 @@
-class CutScene3Alt1 extends Phaser.Scene {
+class CutScene5Alt2 extends Phaser.Scene {
     constructor() {
-        super("cutScene3Alt1");
+        super("cutScene5Alt2");
     }
   
     preload() {
@@ -35,10 +35,10 @@ class CutScene3Alt1 extends Phaser.Scene {
         
         // show menu text
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'Ladies and Gentlemen, the winner!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'By Decision, Jake LaMotta!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'Great job!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 70, 'Sugar Ray Robinson was a tough opponent!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + 70, 'Press SPACE to continue', smallConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'By Decision, Marcel Cerdan!', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'Better luck next time!', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 70, 'Cerdan is the champion for a reason!', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + 70, 'Press SPACE to restart', smallConfig).setOrigin(0.5);
 
         // define keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -46,7 +46,7 @@ class CutScene3Alt1 extends Phaser.Scene {
   
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-          this.scene.start("cutScene4", game.settings);
+          this.scene.start("cutScene4pt1", game.settings);
         }
       }
   }

@@ -24,7 +24,7 @@ class TrainingScene extends Phaser.Scene {
         
         // show menu text
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'That last fight was a little rough.', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'Lets get some sparring rounds in.', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'Lets get some sparring rounds in', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'before your next fight.', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + 70, 'Press SPACE to continue', textConfig).setOrigin(0.5);
 

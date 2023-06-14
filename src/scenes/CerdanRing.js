@@ -1,6 +1,6 @@
-class SugarRing extends Phaser.Scene {
+class CerdanRing extends Phaser.Scene {
     constructor() {
-        super("sugarRing");
+        super("cerdanRing");
 
         // used to stop updating fists while punching
         this.leftpunching = false;
@@ -68,11 +68,11 @@ class SugarRing extends Phaser.Scene {
         this.p1Boxer.setScale(2);
     
         // Create NPC in top right corner of the ring
-        this.npcBoxer = new NPCBoxer(this, ringX + ringWidth - 50, ringY + 50, 'boxer').setOrigin(0.5, 0);
+        this.npcBoxer = new CerdanBoxer(this, ringX + ringWidth - 50, ringY + 50, 'boxer').setOrigin(0.5, 0);
         this.npcBoxer.setScale(2);
 
         // Sugar Ray attributes
-        this.npcBoxer.moveSpeed = 3.33;
+        this.npcBoxer.moveSpeed = 3.77;
 
 
         // create health text
@@ -335,8 +335,7 @@ class SugarRing extends Phaser.Scene {
         else{
           this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'You Lose', scoreConfig).setOrigin(0.5);
         }
-      }
-      
+      }      
       this.gameOverText.setColor('#ff0000'); // make the text red
   
       if (this.npcBoxer.health <= 0){
@@ -361,7 +360,7 @@ class SugarRing extends Phaser.Scene {
           this.spaceKeyDown = () => {
             if (this.gameOver) {
               this.reset();
-              this.scene.start("cutScene3Alt1", game.settings);
+              this.scene.start("cutScene5Alt1", game.settings);
             }
           };
           this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
@@ -370,7 +369,7 @@ class SugarRing extends Phaser.Scene {
           this.spaceKeyDown = () => {
             if (this.gameOver) {
               this.reset();
-              this.scene.start("cutScene3Alt2", game.settings);
+              this.scene.start("cutScene5Alt2", game.settings);
             }
           };
           this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
@@ -380,7 +379,7 @@ class SugarRing extends Phaser.Scene {
         this.spaceKeyDown = () => {
           if (this.gameOver) {
             this.reset();
-            this.scene.start("cutScene3", game.settings);
+            this.scene.start("cutScene5", game.settings);
           }
         };
         this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
@@ -389,7 +388,7 @@ class SugarRing extends Phaser.Scene {
         this.spaceKeyDown = () => {
           if (this.gameOver) {
             this.reset();
-            this.scene.start("cutScene2", game.settings);
+            this.scene.start("cutScene4pt1", game.settings);
           }
         };
         this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
