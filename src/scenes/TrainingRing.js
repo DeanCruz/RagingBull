@@ -1,6 +1,6 @@
-class Ring extends Phaser.Scene {
+class TrainingRing extends Phaser.Scene {
     constructor() {
-        super("ringScene");
+        super("trainingRing");
 
         // used to stop updating fists while punching
         this.leftpunching = false;
@@ -19,7 +19,7 @@ class Ring extends Phaser.Scene {
         this.endScreenText = [];
 
         // timer
-        this.timer = 30;
+        this.timer = 60;
         this.timerEvent = null;
         this.timerText = null;
         
@@ -366,7 +366,7 @@ class Ring extends Phaser.Scene {
         this.spaceKeyDown = () => {
           if (this.gameOver) {
             this.reset();
-            this.scene.start("cutScene1", game.settings);
+            this.scene.start("trainingComplete", game.settings);
           }
         };
         this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
@@ -375,7 +375,7 @@ class Ring extends Phaser.Scene {
         this.spaceKeyDown = () => {
           if (this.gameOver) {
             this.reset();
-            this.scene.start("cutScene1Alt", game.settings);
+            this.scene.start("trainingComplete", game.settings);
           }
         };
         this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
@@ -384,7 +384,7 @@ class Ring extends Phaser.Scene {
         this.spaceKeyDown = () => {
           if (this.gameOver) {
             this.reset();
-            this.scene.start("tutorialScene", game.settings);
+            this.scene.start("trainingScene", game.settings);
           }
         };
         this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
@@ -424,7 +424,7 @@ class Ring extends Phaser.Scene {
     }
     reset() {
       // reset health
-      this.timer = 30;
+      this.timer = 60;
       this.p1Boxer.health = 100;  
       this.npcBoxer.health = 100;  
       

@@ -93,18 +93,18 @@ class Boxer extends Phaser.GameObjects.Sprite {
         if (this.punchingstate == 'righthook')
         {
             if(this.rage){
-                npcBoxer.health -= 1.2;
+                npcBoxer.health -= 2.4;
             }
             else{
-                npcBoxer.health -= .6;
+                npcBoxer.health -= 1.2;
             }
         }
         else{
             if(this.rage){
-                npcBoxer.health -= .8;
+                npcBoxer.health -= 1.2;
             }
             else{
-                npcBoxer.health -= .4;
+                npcBoxer.health -= .6;
             }
         }
       }

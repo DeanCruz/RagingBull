@@ -310,15 +310,31 @@ class SugarRing extends Phaser.Scene {
       // end screen text
       if (this.npcBoxer.health <= 0 || this.p1Boxer.health <= 0)
       {
-        this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'KO', scoreConfig).setOrigin(0.5);
+        this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 60, 'KO', scoreConfig).setOrigin(0.5);
+        this.gameOverText.setColor('#ff0000'); 
+        this.gameOverText.setFontStyle('bold');
+
+        if (this.npcBoxer.health <= 0){
+          this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'You Win', scoreConfig).setOrigin(0.5);
+        }
+        else{
+          this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'You Lose', scoreConfig).setOrigin(0.5);
+        }
       }
       else
       {
-        this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'Round 10 Over', scoreConfig).setOrigin(0.5);
-      }
-      
+        this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 60, 'Round 10 Over', scoreConfig).setOrigin(0.5);
+        this.gameOverText.setColor('#ff0000'); 
+        this.gameOverText.setFontStyle('bold');
+
+        if (this.npcBoxer.health <= this.p1Boxer.health){
+          this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'You Win', scoreConfig).setOrigin(0.5);
+        }
+        else{
+          this.gameOverText = this.add.text(game.config.width / 2, game.config.height / 2 - 30, 'You Lose', scoreConfig).setOrigin(0.5);
+        }
+      }      
       this.gameOverText.setColor('#ff0000'); // make the text red
-      this.gameOverText.setFontStyle('bold'); // make the text bold
   
       if (this.npcBoxer.health <= 0){
         this.spaceToStartText = this.add.text(game.config.width / 2, game.config.height / 2 + 30, 'Press SPACE to continue', scoreConfig).setOrigin(0.5);
@@ -342,7 +358,7 @@ class SugarRing extends Phaser.Scene {
           this.spaceKeyDown = () => {
             if (this.gameOver) {
               this.reset();
-              this.scene.start("cutScene3Alt1", game.settings);
+              this.scene.start("cutScene4Alt1", game.settings);
             }
           };
           this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
@@ -351,7 +367,7 @@ class SugarRing extends Phaser.Scene {
           this.spaceKeyDown = () => {
             if (this.gameOver) {
               this.reset();
-              this.scene.start("cutScene3Alt2", game.settings);
+              this.scene.start("cutScene4Alt2", game.settings);
             }
           };
           this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);

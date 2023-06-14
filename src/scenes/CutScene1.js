@@ -35,7 +35,7 @@ class CutScene1 extends Phaser.Scene {
   
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-          this.scene.start("cutScene2", game.settings);
+          this.scene.start("trainingScene", game.settings);
         }
       }
   }
