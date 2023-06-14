@@ -6,6 +6,9 @@ class Ring extends Phaser.Scene {
         this.leftpunching = false;
         this.rightpunching = false;
 
+        // set boxer scale
+        this.initialScale = 2;
+
         // add text to display time
         this.timeText = null;
 
@@ -65,11 +68,11 @@ class Ring extends Phaser.Scene {
     
         // Create Player in bottom left corner of the ring
         this.p1Boxer = new Boxer(this, ringX + 50, ringY + ringHeight - 50, 'boxer').setOrigin(0.5, 0);
-        this.p1Boxer.setScale(2);
+        this.p1Boxer.setScale(this.initialScale);
     
         // Create NPC in top right corner of the ring
         this.npcBoxer = new NPCBoxer(this, ringX + ringWidth - 50, ringY + 50, 'boxer').setOrigin(0.5, 0);
-        this.npcBoxer.setScale(2);
+        this.npcBoxer.setScale(this.initialScale);
 
 
         // create health text
@@ -86,6 +89,27 @@ class Ring extends Phaser.Scene {
         };
         this.p1HealthText = this.add.text(game.config.width / 2.5, game.config.height - 20, `Health: ${this.p1Boxer.health}`, healthConfig).setOrigin(0.5);
         this.npcHealthText = this.add.text(game.config.width / 2.5, 20, `Health: ${this.npcBoxer.health}`, healthConfig).setOrigin(0.5);
+
+        // Special ability text
+        this.rageTextConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            color: '#FF0000',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0,
+        };
+        
+        this.rageTextLeft = this.add.text(ringX - 60, ringY + ringHeight / 2, 'RAGING', this.rageTextConfig).setOrigin(0.5);
+        this.rageTextRight = this.add.text(ringX + ringWidth + 60, ringY + ringHeight / 2, 'BULL', this.rageTextConfig).setOrigin(0.5);
+        
+        // Initially hide the text
+        this.rageTextLeft.setVisible(false);
+        this.rageTextRight.setVisible(false);
+      
 
         // Health bars
         this.p1HealthBar = {
@@ -109,6 +133,9 @@ class Ring extends Phaser.Scene {
         this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO); 
         this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
         this.key4 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
+
+        // special ability raging bull
+        this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
         // Esc key for pause menu
         this.keyEsc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -180,37 +207,54 @@ class Ring extends Phaser.Scene {
           } else {
             this.p1Boxer.velX = 0;
           }
-          
+
+          // Left jab
           if (Phaser.Input.Keyboard.JustDown(this.key1)) {
             if (!this.p1Boxer.leftpunching) {
               this.p1Boxer.leftpunching = true;
               this.p1Boxer.punchLeft(this.input.activePointer);
             }
           }
-          
+          // Right cross
           if (Phaser.Input.Keyboard.JustDown(this.key2)) {
             if (!this.p1Boxer.rightpunching) {
               this.p1Boxer.rightpunching = true;
               this.p1Boxer.punchRight(this.input.activePointer);
             }
           }
+          // Left hook
           if (Phaser.Input.Keyboard.JustDown(this.key3)) {
             if (!this.p1Boxer.leftpunching) {
               this.p1Boxer.leftpunching = true;
               this.p1Boxer.hookLeft(this.input.activePointer);
             }
           }
+          // Right hook
           if (Phaser.Input.Keyboard.JustDown(this.key4)) {
             if (!this.p1Boxer.rightpunching) {
               this.p1Boxer.rightpunching = true;
               this.p1Boxer.hookRight(this.input.activePointer);
             }
           }  
+          // Special ability x2 dmg
+          if (Phaser.Input.Keyboard.JustDown(this.keyR)) {
+            this.p1Boxer.RagingBull();
+          }
+          // If special ability pressed, display text
+          if (this.p1Boxer.rage) {
+              this.rageTextLeft.setVisible(true);
+              this.rageTextRight.setVisible(true);
+          } else {
+              this.rageTextLeft.setVisible(false);
+              this.rageTextRight.setVisible(false);
+          }
+          // Pause menu
           if (Phaser.Input.Keyboard.JustDown(this.keyEsc)) {
-            this.isPaused = true;  // Toggle pause status
+            this.isPaused = true;  
             console.log(this.gameOver);
             this.showPauseMenu(this.isPaused);
           }
+          
 
           // update health text
           this.p1HealthText.setText(`Health: ${Math.floor(this.p1Boxer.health)}`);
@@ -383,6 +427,8 @@ class Ring extends Phaser.Scene {
 
       // Hide pause menu
       this.showPauseMenu(false);  
-        
+      this.p1Boxer.rage = false;
+      this.p1Boxer.hasUsedRage = false;
+      this.p1Boxer.setScale(this.initialScale);
     }
 }

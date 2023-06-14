@@ -26,6 +26,10 @@ class Boxer extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
         scene.add.existing(this.leftFist);
         scene.add.existing(this.rightFist);
+
+        // Raging Bull ability
+        this.rage = false;
+        this.hasUsedRage = false;
     }
     
     update(pointer, npcBoxer){
@@ -67,20 +71,41 @@ class Boxer extends Phaser.GameObjects.Sprite {
       if (Phaser.Geom.Intersects.CircleToRectangle(this.leftFist, npcBody)) {
         if (this.punchingstate == 'lefthook')
         {
-            npcBoxer.health -= .6;
+            if(this.rage){
+                npcBoxer.health -= 1.2;
+            }
+            else{
+                npcBoxer.health -= .6;
+            }
+            
         }
         else{
-            npcBoxer.health -= .3;
+            if(this.rage){
+                npcBoxer.health -= .6;
+            }
+            else{
+                npcBoxer.health -= .3;
+            }
         }
       }
   
       if (Phaser.Geom.Intersects.CircleToRectangle(this.rightFist, npcBody)) {
         if (this.punchingstate == 'righthook')
         {
-            npcBoxer.health -= .9;
+            if(this.rage){
+                npcBoxer.health -= 1.8;
+            }
+            else{
+                npcBoxer.health -= .9;
+            }
         }
         else{
-            npcBoxer.health -= .6;
+            if(this.rage){
+                npcBoxer.health -= 1.2;
+            }
+            else{
+                npcBoxer.health -= .6;
+            }
         }
       }
     }
@@ -281,4 +306,27 @@ class Boxer extends Phaser.GameObjects.Sprite {
             }
         });
     }    
+    RagingBull() {
+        if (!this.hasUsedRage) {
+            // Save the original scale for later
+            this.originalScale = { x: this.scaleX, y: this.scaleY };
+    
+            // Scales the boxer 1.1X bigger
+            this.setScale(this.scaleX * 1.3, this.scaleY * 1.3);
+            
+            // Activates the rage toggle
+            this.rage = true;
+    
+            // Make sure the RagingBull can't be used again in the same fight
+            this.hasUsedRage = true;
+    
+            // Use Phaser's delayedCall to revert the changes after 5 seconds
+            this.scene.time.delayedCall(5000, () => {
+                this.setScale(this.originalScale.x, this.originalScale.y);
+                this.rage = false;
+            });
+        } else {
+            console.warn("RagingBull ability has already been used in this fight!");
+        }
+    }
 }
