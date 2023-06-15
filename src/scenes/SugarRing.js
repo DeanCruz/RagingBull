@@ -34,10 +34,24 @@ class SugarRing extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image('boxer', './assets/rocket.png');
-    }
+        this.load.image('boxer', './assets/boxer.png');
+        this.load.audio('swing1', './assets/swing1.mp3');
+        this.load.audio('swing2', './assets/swing2.mp3');
+        this.load.audio('punch1', './assets/punch1.mp3');
+        this.load.audio('punch2', './assets/punch2.mp3');
+        this.load.audio('punch3', './assets/punch3.mp3');
+        this.load.audio('punch4', './assets/punch4.mp3');
+  }
 
-    create() {
+  create() {
+        //swing volume
+        this.sound.add('swing1', { volume: 0.01 });
+        this.sound.add('swing2', { volume: 0.01 });
+        this.sound.add('punch1', { volume: 0.01 });
+        this.sound.add('punch2', { volume: 0.01 });
+        this.sound.add('punch3', { volume: 0.01 });
+        this.sound.add('punch4', { volume: 0.01 });
+
         // black borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0x000000 ).setOrigin(0,0);
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0x000000).setOrigin(0,0);
@@ -295,6 +309,7 @@ class SugarRing extends Phaser.Scene {
       // end loop
       this.gameOver = true;
       this.isPaused = false;
+      this.sound.stopAll();
   
       // display text
       let scoreConfig = {

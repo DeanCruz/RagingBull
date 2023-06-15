@@ -19,6 +19,8 @@ class Boxer extends Phaser.GameObjects.Sprite {
         this.rightpunching = false;
         this.rotation = 0;
         this.health = 100;
+        this.punchSoundPlaying = false;
+        this.swingSoundPlaying = false;
     
         // Add fists to container
         this.container.add([this, this.leftFist, this.rightFist]);
@@ -31,7 +33,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
         this.rage = false;
         this.hasUsedRage = false;
     }
-    
+
     update(pointer, npcBoxer){
         // Rotate boxer to face towards mouse pointer with a 45-degree offset
         const angle = Phaser.Math.Angle.Between(
@@ -64,6 +66,32 @@ class Boxer extends Phaser.GameObjects.Sprite {
           this.rightFist.setRotation(rotationAngle);
       }
 
+      // detect if sound is playing
+      const isPunchSoundPlaying = this.scene.sound.sounds.some(
+        (sound) => sound.key === 'punch1' || sound.key === 'punch2' || sound.key === 'punch3' || sound.key === 'punch4'
+      );
+
+      if (isPunchSoundPlaying) {
+        this.punchSoundPlaying = true;
+      } else {
+        this.punchSoundPlaying = false;
+      }
+
+      const isSwingSoundPlaying = this.scene.sound.sounds.some(
+        (sound) => sound.key === 'swing1' || sound.key === 'swing2'
+      );
+
+      if (isPunchSoundPlaying) {
+        this.punchSoundPlaying = true;
+      } else {
+        this.punchSoundPlaying = false;
+      }
+      if (isSwingSoundPlaying) {
+        this.punchSoundPlaying = true;
+      } else {
+        this.punchSoundPlaying = false;
+      }
+
       // Collision detection and resolution
       const npcBody = new Phaser.Geom.Rectangle(npcBoxer.x, npcBoxer.y, npcBoxer.width, npcBoxer.height);
 
@@ -71,6 +99,9 @@ class Boxer extends Phaser.GameObjects.Sprite {
       if (Phaser.Geom.Intersects.CircleToRectangle(this.leftFist, npcBody)) {
         if (this.punchingstate == 'lefthook')
         {
+            if (!this.punchSoundPlaying) {
+                this.scene.sound.play('punch3');
+            }
             if(this.rage){
                 npcBoxer.health -= .8;
             }
@@ -80,6 +111,9 @@ class Boxer extends Phaser.GameObjects.Sprite {
             
         }
         else{
+            if (!this.punchSoundPlaying) {
+                this.scene.sound.play('punch1');
+            }
             if(this.rage){
                 npcBoxer.health -= .4;
             }
@@ -92,7 +126,11 @@ class Boxer extends Phaser.GameObjects.Sprite {
       if (Phaser.Geom.Intersects.CircleToRectangle(this.rightFist, npcBody)) {
         if (this.punchingstate == 'righthook')
         {
+            if (!this.punchSoundPlaying) {
+                this.scene.sound.play('punch4');
+            }
             if(this.rage){
+                
                 npcBoxer.health -= 2.4;
             }
             else{
@@ -100,6 +138,9 @@ class Boxer extends Phaser.GameObjects.Sprite {
             }
         }
         else{
+            if (!this.punchSoundPlaying) {
+                this.scene.sound.play('punch2');
+            }
             if(this.rage){
                 npcBoxer.health -= 1.2;
             }
@@ -124,7 +165,12 @@ class Boxer extends Phaser.GameObjects.Sprite {
     punchLeft(pointer) {
         this.punchingstate = 'jab';
         const punchDistance = 33;
-      
+
+        // Play swing1 sound
+        if (!this.swingSoundPlaying) {
+            this.scene.sound.play('swing1');
+        }
+
         // Calculate the angle between the boxer and the pointer
         const angle = Phaser.Math.Angle.Between(this.leftFist.x, this.leftFist.y, pointer.x, pointer.y);
       
@@ -149,6 +195,12 @@ class Boxer extends Phaser.GameObjects.Sprite {
       // Right Cross
       punchRight(pointer) {
         this.punchingstate = 'cross';
+
+        // Play swing2 sound
+        if (!this.swingSoundPlaying) {
+            this.scene.sound.play('swing2');
+        }
+
         if (!pointer || typeof pointer.x === 'undefined' || typeof pointer.y === 'undefined') {
             console.error('Invalid pointer object:', pointer);
             return;
@@ -184,6 +236,12 @@ class Boxer extends Phaser.GameObjects.Sprite {
       // Left hook
       hookLeft(pointer) {
         this.punchingstate = 'lefthook';
+
+        // Play swing1 sound
+        if (!this.swingSoundPlaying) {
+            this.scene.sound.play('swing1');
+        }
+
         // Initial target
         let targetIx = this.leftFist.x, targetIy = this.leftFist.y;
         // Final target angle
@@ -247,6 +305,12 @@ class Boxer extends Phaser.GameObjects.Sprite {
     // Right hook
     hookRight(pointer) {
         this.punchingstate = 'righthook';
+
+        // Play swing2 sound
+        if (!this.swingSoundPlaying) {
+            this.scene.sound.play('swing2');
+        }
+
         // Initial target
         let targetIx = this.rightFist.x, targetIy = this.rightFist.y;
         // Final target angle
