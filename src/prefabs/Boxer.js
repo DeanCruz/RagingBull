@@ -14,6 +14,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
         this.leftFist = this.scene.add.circle(20, -this.displayHeight / 2, 8, 0xFF0000).setOrigin(.9, .9);
         this.rightFist = this.scene.add.circle(40, -this.displayHeight / 2, 8, 0xFF0000).setOrigin(.5, 1.2);
 
+        // Boxer states
         this.punchingstate = 'none';
         this.leftpunching = false;
         this.rightpunching = false;
@@ -48,6 +49,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
         // Update the positions and rotations of the fists relative to the boxer
         const distance = this.displayWidth / 2;
       
+        // update left fist
         if (!this.leftpunching) {
           const leftFistOffset = Math.PI / 2 + Math.PI / 4;
           const leftFistAngle = rotationAngle + leftFistOffset;
@@ -56,7 +58,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
           this.leftFist.setPosition(leftFistX, leftFistY);
           this.leftFist.setRotation(rotationAngle);
         }
-    
+        // update right fist
         if (!this.rightpunching) {
           const rightFistOffset = Math.PI / 2 - Math.PI / 4;
           const rightFistAngle = rotationAngle + rightFistOffset;
@@ -70,17 +72,10 @@ class Boxer extends Phaser.GameObjects.Sprite {
       const isPunchSoundPlaying = this.scene.sound.sounds.some(
         (sound) => sound.key === 'punch1' || sound.key === 'punch2' || sound.key === 'punch3' || sound.key === 'punch4'
       );
-
-      if (isPunchSoundPlaying) {
-        this.punchSoundPlaying = true;
-      } else {
-        this.punchSoundPlaying = false;
-      }
-
       const isSwingSoundPlaying = this.scene.sound.sounds.some(
         (sound) => sound.key === 'swing1' || sound.key === 'swing2'
-      );
-
+      );      
+      // set sound state
       if (isPunchSoundPlaying) {
         this.punchSoundPlaying = true;
       } else {
@@ -96,6 +91,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
       const npcBody = new Phaser.Geom.Rectangle(npcBoxer.x, npcBoxer.y, npcBoxer.width, npcBoxer.height);
 
       // Check for fist collision with body
+      // left fist collision
       if (Phaser.Geom.Intersects.CircleToRectangle(this.leftFist, npcBody)) {
         if (this.punchingstate == 'lefthook')
         {
@@ -122,7 +118,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
             }
         }
       }
-  
+      // right fist collision
       if (Phaser.Geom.Intersects.CircleToRectangle(this.rightFist, npcBody)) {
         if (this.punchingstate == 'righthook')
         {
@@ -151,11 +147,13 @@ class Boxer extends Phaser.GameObjects.Sprite {
       }
     }
 
+    // set boxer rotation
     setRotation(angle) {
         super.setRotation(angle);
         this.rotation = angle;
     }
 
+    // reset boxer
     reset() {
         this.x = game.config.width/2;
         this.y = game.config.height/1.2;
@@ -229,7 +227,7 @@ class Boxer extends Phaser.GameObjects.Sprite {
           duration: 110, // Punch duration
           ease: 'Power2', 
           yoyo: true, // Move fist back
-          onComplete: () => this.rightpunching = false // Reset leftpunching when the animation is complete
+          onComplete: () => this.rightpunching = false // Reset left punching when the animation is complete
         });
       }
     

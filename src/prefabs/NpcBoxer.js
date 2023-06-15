@@ -111,6 +111,7 @@ class NPCBoxer extends Boxer {
                 this.x -= dirX * speed;
             }
             
+            // Punch if in range
             if (len <= 30 && this.leftpunching == false && this.rightpunching == false) {
                 let rand = Math.random();
                 if (rand < 0.05) {
@@ -159,6 +160,7 @@ class NPCBoxer extends Boxer {
         // Update the positions and rotations of the fists relative to the NPC boxer
         const distance = this.displayWidth / 2;
     
+        // update left fist
         if (!this.leftpunching) {
             const leftFistOffset = Math.PI / 2 + Math.PI / 4;
             const leftFistAngle = rotationAngle + leftFistOffset;
@@ -167,7 +169,7 @@ class NPCBoxer extends Boxer {
             this.leftFist.setPosition(leftFistX, leftFistY);
             this.leftFist.setRotation(rotationAngle);
         }
-    
+        // update right fist
         if (!this.rightpunching) {
             const rightFistOffset = Math.PI / 2 - Math.PI / 4;
             const rightFistAngle = rotationAngle + rightFistOffset;

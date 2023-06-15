@@ -344,11 +344,13 @@ class Ring extends Phaser.Scene {
       this.sound.stopAll();
       this.sound.play('cheer', { loop: true });
 
+      // play bell sound twice
       this.sound.play('bell');
       this.time.delayedCall(300, () => {
         this.sound.play('bell');
       }, [], this);
 
+      // stop bell sounds
       this.time.delayedCall(5000, () => {
         this.sound.stopAll();
         this.sound.play('cheer', { loop: true });
@@ -413,6 +415,7 @@ class Ring extends Phaser.Scene {
       this.endScreenText.push(this.spaceToStartText);
 
       // check key input to return to menu
+      // if time out 
       if (this.timer <= 0){
         this.spaceKeyDown = () => {
           if (this.gameOver) {
@@ -422,6 +425,7 @@ class Ring extends Phaser.Scene {
         };
         this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
       }
+      // if boxer wins
       else if (this.p1Boxer.health > 0){
         this.spaceKeyDown = () => {
           if (this.gameOver) {
@@ -431,6 +435,7 @@ class Ring extends Phaser.Scene {
         };
         this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
       }
+      // if npc wins
       else {
         this.spaceKeyDown = () => {
           if (this.gameOver) {
@@ -441,6 +446,8 @@ class Ring extends Phaser.Scene {
         this.input.keyboard.on('keydown-SPACE', this.spaceKeyDown);
       }
     }
+
+    // pause menu
     createPauseMenu() {
       const menuConfig = {
           fontFamily: 'Courier',
@@ -468,6 +475,7 @@ class Ring extends Phaser.Scene {
       this.mainMenuButton
       .on('pointerdown', () => this.scene.start('menuScene'));
     }
+    // show menu
     showPauseMenu(show) {
         this.pauseText.visible = show;
         this.restartButton.visible = show;
