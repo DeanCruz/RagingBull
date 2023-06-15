@@ -1,4 +1,7 @@
 // Dean Cruz
+// ID: 1606529
+// Raging Bull
+// An arcade style boxing game
 // configure game
 let config = {
     type: Phaser.CANVAS,
