@@ -37,10 +37,46 @@ class TrainingRing extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image('boxer', './assets/rocket.png');
-    }
+      this.load.audio('murmer', './assets/murmer.mp3');
+      this.load.audio('bell', './assets/bell.mp3');
+      this.load.image('boxer', './assets/boxer.png');
+      this.load.audio('swing1', './assets/swing1.mp3');
+      this.load.audio('swing2', './assets/swing2.mp3');
+      this.load.audio('punch1', './assets/punch1.mp3');
+      this.load.audio('punch2', './assets/punch2.mp3');
+      this.load.audio('punch3', './assets/punch3.mp3');
+      this.load.audio('punch4', './assets/punch4.mp3');
+      this.load.audio('cheer', './assets/cheering.mp3');
+  }
 
-    create() {
+  create() {
+        // crowd sound
+        this.sound.play('murmer', { loop: true });
+        // swing volume
+        this.sound.add('swing1', { volume: 0.01 });
+        this.sound.add('swing2', { volume: 0.01 });
+        this.sound.add('punch1', { volume: 0.01 });
+        this.sound.add('punch2', { volume: 0.01 });
+        this.sound.add('punch3', { volume: 0.01 });
+        this.sound.add('punch4', { volume: 0.01 });
+
+        // play bell twice
+        this.sound.play('bell');
+        const bellSound = this.sound.add('bell');
+        bellSound.play({
+          seek: 0,
+          duration: 1000,
+        });
+        this.time.delayedCall(300, () => {
+          bellSound.play({
+            seek: 0,
+            duration: 1000,
+          });
+          this.time.delayedCall(5000, () => {
+            bellSound.stop();
+          }, [], this);
+        }, [], this);
+
         // black borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0x000000 ).setOrigin(0,0);
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0x000000).setOrigin(0,0);
@@ -74,7 +110,6 @@ class TrainingRing extends Phaser.Scene {
         this.npcBoxer = new NPCBoxer(this, ringX + ringWidth - 50, ringY + 50, 'boxer').setOrigin(0.5, 0);
         this.npcBoxer.setScale(this.initialScale);
 
-
         // create health text
         const healthConfig = {
             fontFamily: 'Courier',
@@ -105,6 +140,8 @@ class TrainingRing extends Phaser.Scene {
         
         this.rageTextLeft = this.add.text(ringX - 60, ringY + ringHeight / 2, 'RAGING', this.rageTextConfig).setOrigin(0.5);
         this.rageTextRight = this.add.text(ringX + ringWidth + 60, ringY + ringHeight / 2, 'BULL', this.rageTextConfig).setOrigin(0.5);
+        this.rageTextLeft.setFontStyle('bold');
+        this.rageTextRight.setFontStyle('bold');
         
         // Initially hide the text
         this.rageTextLeft.setVisible(false);
@@ -302,6 +339,16 @@ class TrainingRing extends Phaser.Scene {
       // end loop
       this.gameOver = true;
       this.isPaused = false;
+      this.sound.stopAll();
+
+      this.sound.play('bell');
+      this.time.delayedCall(300, () => {
+        this.sound.play('bell');
+      }, [], this);
+
+      this.time.delayedCall(5000, () => {
+        this.sound.stopAll();
+      }, [], this);
   
       // display text
       let scoreConfig = {
@@ -423,6 +470,8 @@ class TrainingRing extends Phaser.Scene {
         this.mainMenuButton.visible = show;
     }
     reset() {
+      // stop sounds
+      this.sound.stopAll();
       // reset health
       this.timer = 60;
       this.p1Boxer.health = 100;  

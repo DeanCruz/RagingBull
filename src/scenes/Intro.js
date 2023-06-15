@@ -5,14 +5,28 @@ class Intro extends Phaser.Scene {
   
     preload() {
         // load audio
-  
+        this.load.audio('crowd', './assets/crowd.mp3');
     }
     
     create() {
+        // add crowd cheering
+        this.sound.play('crowd', { loop: true });
+        
         // text configuration
         let textConfig = {
             fontFamily: 'Major Mono Display',
             fontSize: '28px',
+            color: '#FFFFFF',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0
+        }
+        let smallConfig = {
+            fontFamily: 'Major Mono Display',
+            fontSize: '18px',
             color: '#FFFFFF',
             align: 'right',
             padding: {
@@ -26,7 +40,7 @@ class Intro extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'Hes got you, Jake! Youre outpointed!', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'Youre coming up for the tenth.', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'You gotta knock him out!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + 70, 'Press space to continue', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + 70, 'Press space to continue', smallConfig).setOrigin(0.5);
   
         // define keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);

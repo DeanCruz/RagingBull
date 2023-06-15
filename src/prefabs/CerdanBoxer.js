@@ -139,11 +139,11 @@ class CerdanBoxer extends Boxer {
 
         // Check for fist collision with body
         if (Phaser.Geom.Intersects.CircleToRectangle(this.leftFist, p1Body)) {
-            p1Boxer.health -= 1;
+            p1Boxer.health -= 1.5;
         }
     
         if (Phaser.Geom.Intersects.CircleToRectangle(this.rightFist, p1Body)) {
-            p1Boxer.health -= 2;
+            p1Boxer.health -= 3;
         }
     
         // Rotate NPC to face towards the player boxer with a 45-degree offset

@@ -37,10 +37,48 @@ class Ring extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image('boxer', './assets/rocket.png');
+        this.load.audio('crowd', './assets/crowd.mp3');
+        this.load.audio('bell', './assets/bell.mp3');
+        this.load.image('boxer', './assets/boxer.png');
+        this.load.audio('swing1', './assets/swing1.mp3');
+        this.load.audio('swing2', './assets/swing2.mp3');
+        this.load.audio('punch1', './assets/punch1.mp3');
+        this.load.audio('punch2', './assets/punch2.mp3');
+        this.load.audio('punch3', './assets/punch3.mp3');
+        this.load.audio('punch4', './assets/punch4.mp3');
+        this.load.audio('cheer', './assets/cheering.mp3');
     }
 
     create() {
+        // crowd sound
+        this.sound.play('crowd', { loop: true });
+        // punch sounds
+        this.sound.add('swing1', { volume: 0.01 });
+        this.sound.add('swing2', { volume: 0.01 });
+        this.sound.add('punch1', { volume: 0.01 });
+        this.sound.add('punch2', { volume: 0.01 });
+        this.sound.add('punch3', { volume: 0.01 });
+        this.sound.add('punch4', { volume: 0.01 });
+        this.sound.add('cheer', {volume: 0.5});
+
+        // play bell twice
+        this.sound.play('bell');
+        const bellSound = this.sound.add('bell');
+        bellSound.play({
+          seek: 0,
+          duration: 1000,
+        });
+        this.time.delayedCall(300, () => {
+          bellSound.play({
+            seek: 0,
+            duration: 1000,
+          });
+          this.time.delayedCall(5000, () => {
+            bellSound.stop();
+          }, [], this);
+        }, [], this);
+        
+
         // black borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0x000000 ).setOrigin(0,0);
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0x000000).setOrigin(0,0);
@@ -112,10 +150,6 @@ class Ring extends Phaser.Scene {
         this.rageTextLeft.setVisible(false);
         this.rageTextRight.setVisible(false);
         
-
-
-      
-
         // Health bars
         this.p1HealthBar = {
             background: this.add.graphics().fillStyle(0xff0000).fillRect(game.config.width / 1.75 - 50, game.config.height - 25, 100, 10),
@@ -307,6 +341,18 @@ class Ring extends Phaser.Scene {
       // end loop
       this.gameOver = true;
       this.isPaused = false;
+      this.sound.stopAll();
+      this.sound.play('cheer', { loop: true });
+
+      this.sound.play('bell');
+      this.time.delayedCall(300, () => {
+        this.sound.play('bell');
+      }, [], this);
+
+      this.time.delayedCall(5000, () => {
+        this.sound.stopAll();
+        this.sound.play('cheer', { loop: true });
+      }, [], this);
   
       // display text
       let scoreConfig = {
@@ -428,6 +474,8 @@ class Ring extends Phaser.Scene {
         this.mainMenuButton.visible = show;
     }
     reset() {
+      // stop sounds
+      this.sound.stopAll();
       // reset health
       this.timer = 30;
       this.p1Boxer.health = 100;  

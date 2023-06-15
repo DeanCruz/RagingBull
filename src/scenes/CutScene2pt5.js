@@ -1,17 +1,13 @@
-class CutScene5Alt1 extends Phaser.Scene {
+class CutScene2pt5 extends Phaser.Scene {
     constructor() {
-        super("cutScene5Alt1");
+        super("cutScene2pt5");
     }
   
     preload() {
-        // load audio
-        this.load.audio('cheer', './assets/cheering.mp3');
+
     }
     
     create() {
-        // add crowd cheering
-        this.sound.play('cheer', { loop: true });
-        
         // text configuration
         let textConfig = {
             fontFamily: 'Major Mono Display',
@@ -26,7 +22,7 @@ class CutScene5Alt1 extends Phaser.Scene {
         }
         let smallConfig = {
             fontFamily: 'Major Mono Display',
-            fontSize: '20px',
+            fontSize: '18px',
             color: '#FFFFFF',
             align: 'right',
             padding: {
@@ -37,10 +33,10 @@ class CutScene5Alt1 extends Phaser.Scene {
         }
         
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'Ladies and Gentlemen, the winner!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'By Decision, Jake LaMotta!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'Congratulations!', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 70, 'You are now the middle weight champion!', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'And in the red corner,', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'from New York, New York,', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 35, 'the Bronx Bull,', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize + 70, 'Jake LaMotta!', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + 70, 'Press SPACE to continue', smallConfig).setOrigin(0.5);
 
         // define keys
@@ -49,7 +45,7 @@ class CutScene5Alt1 extends Phaser.Scene {
   
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-          this.scene.start("credits", game.settings);
+          this.scene.start("sugarRing", game.settings);
           // stop sounds
           this.sound.stopAll();   
         }
