@@ -37,7 +37,7 @@ class TrainingRing extends Phaser.Scene {
     }
 
     preload(){
-      this.load.audio('crowd', './assets/crowd.mp3');
+      this.load.audio('murmer', './assets/murmer.mp3');
       this.load.audio('bell', './assets/bell.mp3');
       this.load.image('boxer', './assets/boxer.png');
       this.load.audio('swing1', './assets/swing1.mp3');
@@ -50,7 +50,9 @@ class TrainingRing extends Phaser.Scene {
   }
 
   create() {
-        //swing volume
+        // crowd sound
+        this.sound.play('murmer', { loop: true });
+        // swing volume
         this.sound.add('swing1', { volume: 0.01 });
         this.sound.add('swing2', { volume: 0.01 });
         this.sound.add('punch1', { volume: 0.01 });
@@ -108,7 +110,6 @@ class TrainingRing extends Phaser.Scene {
         this.npcBoxer = new NPCBoxer(this, ringX + ringWidth - 50, ringY + 50, 'boxer').setOrigin(0.5, 0);
         this.npcBoxer.setScale(this.initialScale);
 
-
         // create health text
         const healthConfig = {
             fontFamily: 'Courier',
@@ -139,6 +140,8 @@ class TrainingRing extends Phaser.Scene {
         
         this.rageTextLeft = this.add.text(ringX - 60, ringY + ringHeight / 2, 'RAGING', this.rageTextConfig).setOrigin(0.5);
         this.rageTextRight = this.add.text(ringX + ringWidth + 60, ringY + ringHeight / 2, 'BULL', this.rageTextConfig).setOrigin(0.5);
+        this.rageTextLeft.setFontStyle('bold');
+        this.rageTextRight.setFontStyle('bold');
         
         // Initially hide the text
         this.rageTextLeft.setVisible(false);

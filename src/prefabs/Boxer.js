@@ -103,10 +103,10 @@ class Boxer extends Phaser.GameObjects.Sprite {
                 this.scene.sound.play('punch3');
             }
             if(this.rage){
-                npcBoxer.health -= .8;
+                npcBoxer.health -= 1.2;
             }
             else{
-                npcBoxer.health -= .4;
+                npcBoxer.health -= .6;
             }
             
         }
@@ -131,10 +131,10 @@ class Boxer extends Phaser.GameObjects.Sprite {
             }
             if(this.rage){
                 
-                npcBoxer.health -= 2.4;
+                npcBoxer.health -= 1.8;
             }
             else{
-                npcBoxer.health -= 1.2;
+                npcBoxer.health -= .9;
             }
         }
         else{
@@ -142,10 +142,10 @@ class Boxer extends Phaser.GameObjects.Sprite {
                 this.scene.sound.play('punch2');
             }
             if(this.rage){
-                npcBoxer.health -= 1.2;
+                npcBoxer.health -= .6;
             }
             else{
-                npcBoxer.health -= .6;
+                npcBoxer.health -= .3;
             }
         }
       }

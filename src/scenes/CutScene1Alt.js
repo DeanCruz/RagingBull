@@ -5,10 +5,13 @@ class CutScene1Alt extends Phaser.Scene {
   
     preload() {
         // load audio
-  
+        this.load.audio('clap', './assets/clapping.mp3');
     }
     
     create() {
+        // add crowd cheering
+        this.sound.play('clap', { loop: true });
+
         // text configuration
         let textConfig = {
             fontFamily: 'Major Mono Display',
@@ -46,7 +49,9 @@ class CutScene1Alt extends Phaser.Scene {
   
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-          this.scene.start("trainingScene", game.settings);
+            this.scene.start("trainingScene", game.settings);
+            // stop sounds
+            this.sound.stopAll();
         }
       }
   }

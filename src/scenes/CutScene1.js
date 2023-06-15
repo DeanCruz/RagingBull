@@ -5,10 +5,13 @@ class CutScene1 extends Phaser.Scene {
   
     preload() {
         // load audio
-  
+        this.load.audio('clap', './assets/clapping.mp3');
     }
     
     create() {
+        // add crowd cheering
+        this.sound.play('clap', { loop: true });
+
         // text configuration
         let textConfig = {
             fontFamily: 'Major Mono Display',
@@ -32,7 +35,7 @@ class CutScene1 extends Phaser.Scene {
             },
             fixedWidth: 0
         }
-        
+
         // show menu text
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - 35, 'Ladies and Gentlemen, the winner!', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize, 'under the rules of the Cleveland', textConfig).setOrigin(0.5);
@@ -46,7 +49,9 @@ class CutScene1 extends Phaser.Scene {
   
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-          this.scene.start("trainingScene", game.settings);
+            this.scene.start("trainingScene", game.settings);
+            // stop sounds
+            this.sound.stopAll();
         }
       }
   }

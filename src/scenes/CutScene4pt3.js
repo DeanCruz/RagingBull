@@ -5,10 +5,13 @@ class CutScene4pt3 extends Phaser.Scene {
   
     preload() {
         // load audio
-  
+        this.load.audio('crowd', './assets/crowd.mp3');
     }
     
     create() {
+        // add crowd cheering
+        this.sound.play('crowd', { loop: true });
+        
         // text configuration
         let textConfig = {
             fontFamily: 'Major Mono Display',
@@ -47,6 +50,8 @@ class CutScene4pt3 extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
           this.scene.start("cerdanRing", game.settings);
+          // stop sounds
+          this.sound.stopAll();   
         }
       }
   }

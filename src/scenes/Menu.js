@@ -4,7 +4,6 @@ class Menu extends Phaser.Scene {
   }
 
   preload() {
-      // load audio
 
   }
   

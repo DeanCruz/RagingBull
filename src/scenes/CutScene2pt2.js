@@ -46,7 +46,7 @@ class CutScene2pt2 extends Phaser.Scene {
   
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-          this.scene.start("sugarRing", game.settings);
+          this.scene.start("cutScene2pt3", game.settings);          
         }
       }
   }
