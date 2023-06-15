@@ -31,11 +31,22 @@ class Menu extends Phaser.Scene {
             bottom: 5,
         },
         fixedWidth: 0
-    }    
+    }   
+    let smallConfig = {
+        fontFamily: 'Major Mono Display',
+        fontSize: '18px',
+        color: '#FFFFFF',
+        align: 'right',
+        padding: {
+            top: 5,
+            bottom: 5,
+        },
+        fixedWidth: 0
+    } 
 
     // show menu text
     this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'Raging Bull', titleConfig).setOrigin(0.5);
-    this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press space to start', menuConfig).setOrigin(0.5);
+    this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press space to start', smallConfig).setOrigin(0.5);
 
     // define keys
     keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
